@@ -19,9 +19,13 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         val button: Button =findViewById(R.id.button)
-
+        val btnRegistro:Button=findViewById(R.id.btnRegistro)
         button.setOnClickListener {
-            var intent: Intent = Intent(this, Registrto::class.java)
+            var intent: Intent = Intent(this, Habitos::class.java)
+            startActivity(intent)
+        }
+        btnRegistro.setOnClickListener{
+            var intent: Intent = Intent(this, Registro::class.java)
             startActivity(intent)
         }
     }
