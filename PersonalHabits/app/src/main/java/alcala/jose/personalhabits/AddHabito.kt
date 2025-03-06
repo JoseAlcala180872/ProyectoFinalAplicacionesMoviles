@@ -1,12 +1,15 @@
 package alcala.jose.personalhabits
 
+import alcala.jose.personalhabits.ui.ColorPickerDialogFragment
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+
 
 class AddHabito : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,5 +37,12 @@ class AddHabito : AppCompatActivity() {
             finish()
         }
 
+        val btnColor: ImageButton  = findViewById(R.id.btnColorPicker)
+        btnAceptar.setOnClickListener {
+            val dialog = ColorPickerDialogFragment()
+            dialog.show(supportFragmentManager, "colorPickerDialog")
+
+
+    }
     }
 }
