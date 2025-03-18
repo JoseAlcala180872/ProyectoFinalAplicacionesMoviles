@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "610014806402",
+    "project_id": "personalhabits-dc12d",
+    "storage_bucket": "personalhabits-dc12d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610014806402:android:5ae6fd4505f7fc7deb0f9b",
+        "android_client_info": {
+          "package_name": "alcala.jose.personalhabits"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhwj7h596nmuA3-xmye9RQ0ySFH7uQmf8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
