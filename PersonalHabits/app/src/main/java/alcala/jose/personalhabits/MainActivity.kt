@@ -41,7 +41,12 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         buttonLogin.setOnClickListener {
-            login(email.text.toString(), password.text.toString())
+            if(email.text.isEmpty()||password.text.isEmpty()){
+                showError("Todos los campos deben ser llenados",true)
+            } else {
+                login(email.text.toString(), password.text.toString())
+            }
+
         }
         buttonRegistrarse.setOnClickListener{
             var intent: Intent = Intent(this, Registro::class.java)
