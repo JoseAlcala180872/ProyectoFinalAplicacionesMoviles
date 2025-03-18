@@ -94,6 +94,7 @@
         android:layout_marginTop="10dp"
         android:background="@color/lessPurple"
         android:hint="*******"
+        android:inputType="textPassword"
         android:textAlignment="center"
         android:layout_gravity="center" />
 
