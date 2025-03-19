@@ -37,7 +37,7 @@ class AddHabito : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val intent = Intent(this, Habitos::class.java)
+            val intent = Intent(this, Habito::class.java)
             startActivity(intent)
             finish()
         }

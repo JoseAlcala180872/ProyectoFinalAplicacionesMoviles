@@ -1,38 +1,49 @@
-package alcala.jose.personalhabits
-
+import alcala.jose.personalhabits.AddHabito
+import alcala.jose.personalhabits.HabitAdapter
+import alcala.jose.personalhabits.Habito
+import alcala.jose.personalhabits.R
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageButton
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class Habitos : AppCompatActivity() {
+
+    private lateinit var habitAdapter: HabitAdapter
+    private val habitList = mutableListOf<Habito>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_habitos)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val btnProgreso: Button = findViewById(R.id.progresoButton)
-        btnProgreso.setOnClickListener {
-            val intent = Intent(this, Progreso::class.java)
-            startActivity(intent)
-        }
+        habitAdapter = HabitAdapter(this, habitList,
+            onEditClick = { habit ->
+                val intent = Intent(this, AddHabito::class.java)
+                intent.putExtra("HABITO_ID", habit.id)
+                intent.putExtra("NOMBRE", habit.nombre)
+                intent.putExtra("CATEGORIA", habit.categoria)
+                startActivity(intent)
+            },
+            onDeleteClick = { habit ->
+                habitList.remove(habit)
+                habitAdapter.notifyDataSetChanged()
+            },
+            onCompleteClick = { habit -> // Manejar completar
+                habit.completado = true
+                habitAdapter.notifyDataSetChanged()  // Refrescar la vista
+            }
+        )
 
+        recyclerView.adapter = habitAdapter
 
-        val btnAddHabit: ImageButton = findViewById(R.id.addHabitButton)
-        btnAddHabit.setOnClickListener {
-            val intent = Intent(this, AddHabito::class.java)
-            startActivity(intent)
-        }
-
+        // Datos de prueba
+        habitList.add(Habito(1, "Leer", "Educación"))
+        habitList.add(Habito(2, "Ejercicio", "Salud"))
+        habitAdapter.notifyDataSetChanged()
     }
 }
+
