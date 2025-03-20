@@ -14,7 +14,7 @@ class HabitAdapter(
     private val context: Context,
     private val habitList: MutableList<Habito>,  // Lista de hábitos
     private val onEditClick: (Habito) -> Unit,   // Función para editar
-    private val onDeleteClick: (Habito) -> Unit  // Función para eliminar
+    private val onDeleteClick: (Habito) -> Unit,  // Función para eliminar
     private val onCompleteClick: (Habito) -> Unit  // Función para manejar completar
 ) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
 
