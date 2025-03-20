@@ -4,6 +4,7 @@ import alcala.jose.personalhabits.ui.ColorPickerDialogFragment
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -24,25 +25,30 @@ class AddHabito : AppCompatActivity() {
 
 
         val btnAceptar: Button = findViewById(R.id.btnAceptar)
-        btnAceptar.setOnClickListener {
-            val intent = Intent(this, Habitos::class.java)
-            startActivity(intent)
-            finish()
-        }
-
         val btnCancelar: Button = findViewById(R.id.btnCancelar)
-        btnCancelar.setOnClickListener {
+        val btnColor: ImageButton = findViewById(R.id.btnColorPicker)
+        val etNombre: EditText = findViewById(R.id.etNombre)
+        val etDescripcion: EditText = findViewById(R.id.etDescripcion)
+        btnAceptar.setOnClickListener {
+            val nombre = etNombre.text.toString().trim()
+            val descripcion = etDescripcion.text.toString().trim()
+            if (nombre.isEmpty()) {
+                etNombre.error = "El nombre no puede estar vacío"
+                return@setOnClickListener
+            }
+
             val intent = Intent(this, Habitos::class.java)
             startActivity(intent)
             finish()
         }
 
-        val btnColor: ImageButton  = findViewById(R.id.btnColorPicker)
-        btnAceptar.setOnClickListener {
+        btnCancelar.setOnClickListener {
+            finish()
+        }
+
+        btnColor.setOnClickListener {
             val dialog = ColorPickerDialogFragment()
             dialog.show(supportFragmentManager, "colorPickerDialog")
-
-
-    }
+        }
     }
 }
