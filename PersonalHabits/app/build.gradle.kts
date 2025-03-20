@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.common.ktx)
+    implementation(libs.firebase.database)
 
     //implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 

@@ -15,11 +15,14 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+
 
 class Registro : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-
+    private lateinit var databaseRef: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +30,7 @@ class Registro : AppCompatActivity() {
         setContentView(R.layout.activity_registro)
 
         auth = Firebase.auth
-
+        databaseRef = FirebaseDatabase.getInstance().getReference()
         val name: EditText =findViewById(R.id.etrNombre)
         val email: EditText =findViewById(R.id.etrCorreo)
         val password: EditText =findViewById(R.id.etrContraseña)
@@ -44,7 +47,7 @@ class Registro : AppCompatActivity() {
                 errorTv.visibility= View.VISIBLE
             } else {
                 errorTv.visibility= View.INVISIBLE
-                registrar(email.text.toString(), password.text.toString())
+                registrar(email.text.toString(), password.text.toString(), name.text.toString())
             }
         })
 
@@ -55,13 +58,28 @@ class Registro : AppCompatActivity() {
         }
     }
 
-    fun registrar(email:String, password: String){
+    fun registrar(email:String, password: String, name: String){
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this){
                     task-> if (task.isSuccessful){
                 Log.d("INFO", "signInWithEmail:Success" )
                 val user = auth.currentUser
-                val intenr = Intent(this, MainActivity:: class.java)
+
+                if (user!=null){
+
+                    val userId = user.uid
+
+                    val userData: MutableMap<String, Any> = HashMap()
+                    userData["name"] = name
+
+
+                    databaseRef.child("users").child(userId).setValue(userData)
+                        .addOnSuccessListener { aVoid -> Log.d("FirebaseDB", "User data saved!") }
+                        .addOnFailureListener { e -> Log.w("FirebaseDB", "Error saving data", e) }
+
+                }
+
+                val intent = Intent(this, MainActivity:: class.java)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             } else {
@@ -74,6 +92,4 @@ class Registro : AppCompatActivity() {
             }
             }
     }
-
-
 }
