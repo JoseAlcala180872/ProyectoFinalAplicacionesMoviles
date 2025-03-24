@@ -1,6 +1,5 @@
 package alcala.jose.personalhabits
 
-import alcala.jose.personalhabits.ui.ColorPickerDialogFragment
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
