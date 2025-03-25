@@ -1,5 +1,6 @@
 package alcala.jose.personalhabits
 
+import alcala.jose.personalhabits.ui.home.HomeFragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -55,7 +56,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun goToMain (user:FirebaseUser){
-        var intent: Intent = Intent(this, Habitos::class.java)
+        var intent: Intent = Intent(this, MenuFragment::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }
