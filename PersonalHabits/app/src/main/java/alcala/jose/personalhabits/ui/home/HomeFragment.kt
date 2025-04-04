@@ -1,7 +1,6 @@
 package alcala.jose.personalhabits.ui.home
 
 import alcala.jose.personalhabits.AddHabito
-import alcala.jose.personalhabits.Progreso
 import alcala.jose.personalhabits.R
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -35,6 +34,17 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
         return root
+
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val addHabitButton: ImageButton = binding.addHabitButton
+        addHabitButton.setOnClickListener {
+            val intent = Intent(activity, AddHabito::class.java)
+            startActivity(intent)
+        }
+
     }
 
     override fun onDestroyView() {

@@ -1,5 +1,6 @@
 package alcala.jose.personalhabits
 
+import alcala.jose.personalhabits.ui.home.HomeFragment
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -36,7 +37,7 @@ class AddHabito : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val intent = Intent(this, Habitos::class.java)
+            val intent = Intent(this, MenuFragment::class.java)
             startActivity(intent)
             finish()
         }
