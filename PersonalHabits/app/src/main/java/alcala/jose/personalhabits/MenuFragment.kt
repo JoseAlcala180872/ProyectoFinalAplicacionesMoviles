@@ -17,7 +17,6 @@ class MenuFragment : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMenuFragmentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -31,8 +30,6 @@ class MenuFragment : AppCompatActivity(){
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
             )
         )
-
-
         navView.setupWithNavController(navController)
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,64 +8,90 @@
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="@color/lessPurple">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/habitTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hábito 1"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"/>
-
-        <TextView
-            android:id="@+id/habitCategory"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Categoría"
-            android:textSize="14sp"
-            android:textColor="@android:color/white"/>
-
-        <!-- Contenedor para los botones -->
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end"
-            android:layout_marginTop="8dp">
+            android:background="@color/lessPurple"
+            android:orientation="vertical"
+            android:paddingTop="16dp"
+            android:paddingBottom="4dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
-            <Button
-                android:id="@+id/editButton"
+            <ImageView
+                android:id="@+id/icon_color"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/habit_icon_color"
+                android:contentDescription="icono" />
+
+            <TextView
+                android:id="@+id/habitTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Editar"
-                android:backgroundTint="@color/mediumPurple"
+                android:text="Habit 1"
                 android:textColor="@android:color/white"
-                android:layout_marginEnd="8dp"/>
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"
+                app:layout_constraintStart_toEndOf="@id/icon_color"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/deleteButton"
+            <TextView
+                android:id="@+id/habitDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Eliminar"
-                android:backgroundTint="@color/mediumPurple"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam massa ligula, lobortis vel semper nec, laoreet id ex 1"
                 android:textColor="@android:color/white"
-                android:layout_marginEnd="8dp"/>
+                android:textSize="11sp"
+                app:layout_constraintEnd_toStartOf="@id/completeButton"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/habitTitle" />
+
+            <TextView
+                android:id="@+id/habitCategory"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Categoría"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/habitDescription"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <Button
                 android:id="@+id/completeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Completar"
                 android:backgroundTint="@color/mediumPurple"
-                android:textColor="@android:color/white"/>
-        </LinearLayout>
+                android:text="Completar"
+                android:textColor="@android:color/white"
+                app:layout_constraintTop_toBottomOf="@id/habitDescription"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-    </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageButton
+            android:id="@+id/optionsButton"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_three_dots"
+            android:contentDescription="Options"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_gravity="top|end"
+            android:layout_margin="8dp"
+            android:scaleType="fitCenter"/>
+
+
+    </FrameLayout>
+
 </androidx.cardview.widget.CardView>

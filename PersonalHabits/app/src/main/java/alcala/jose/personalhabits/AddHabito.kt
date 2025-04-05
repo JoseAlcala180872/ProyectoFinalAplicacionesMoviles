@@ -1,6 +1,7 @@
 package alcala.jose.personalhabits
 
 import alcala.jose.personalhabits.Dominio.Habito
+import alcala.jose.personalhabits.repositories.UserRepository
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.graphics.Color
@@ -116,15 +117,13 @@ class AddHabito : AppCompatActivity() {
         val diasSeleccionados = obtenerDiasSeleccionados()
         val categoria = etCategoria.text.toString().trim()
 
-
         if (nombre.isEmpty() || descripcion.isEmpty() || hora.isEmpty() || diasSeleccionados.isEmpty() || categoria.isEmpty()) {
             etNombre.error = "Los campos no pueden estar vacíos"
             return
         }
 
-
         val nuevoHabito = Habito(
-            id = database.push().key ?: "",
+            id = "",
             nombre = nombre,
             descripcion = descripcion,
             hora = hora,
@@ -133,18 +132,16 @@ class AddHabito : AppCompatActivity() {
             categoria = categoria
         )
 
-
-        database.child(nuevoHabito.id).setValue(nuevoHabito)
-            .addOnSuccessListener {
+        UserRepository().addHabit(nuevoHabito) { success ->
+            if (success) {
                 Log.d("AddHabito", "Hábito guardado exitosamente")
                 val intent = Intent(this, MenuFragment::class.java)
                 startActivity(intent)
                 finish()
+            } else {
+                Log.e("AddHabito", "Error al guardar el hábito")
             }
-            .addOnFailureListener { e ->
-                Log.e("AddHabito", "Error al guardar el hábito: ${e.message}")
-                // Handle the error, e.g., show a Toast
-            }
+        }
     }
 
 

@@ -1,6 +1,7 @@
 package alcala.jose.personalhabits.ui.home
 
 import alcala.jose.personalhabits.AddHabito
+import alcala.jose.personalhabits.Dominio.Habito
 import alcala.jose.personalhabits.R
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,25 +11,28 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import alcala.jose.personalhabits.databinding.FragmentHomeBinding
+import alcala.jose.personalhabits.ui.HabitAdapter
 import android.content.Intent
 import android.widget.Button
 import android.widget.ImageButton
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.Observer
+import java.util.ArrayList
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var habitAdapter: HabitAdapter
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -38,6 +42,19 @@ class HomeFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val homeViewModel =
+            ViewModelProvider(this).get(HomeViewModel::class.java)
+
+        recyclerView = binding.recyclerView
+        recyclerView.layoutManager = LinearLayoutManager(context)
+
+        homeViewModel.habitsLiveData.observe(viewLifecycleOwner, Observer { habits ->
+            habitAdapter = HabitAdapter(requireContext(), habits as ArrayList<Habito?>?)
+            recyclerView.adapter = habitAdapter
+        })
+
+        homeViewModel.fetchHabits()
 
         val addHabitButton: ImageButton = binding.addHabitButton
         addHabitButton.setOnClickListener {
