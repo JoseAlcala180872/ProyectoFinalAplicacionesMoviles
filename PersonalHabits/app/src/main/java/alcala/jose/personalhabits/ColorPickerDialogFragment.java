@@ -40,7 +40,10 @@ public class ColorPickerDialogFragment extends DialogFragment {
         blueSeekBar.setOnSeekBarChangeListener(colorChangeListener);
 
         confirmButton.setOnClickListener(v -> {
-            dismiss(); // Close modal (you can send data back if needed)
+            Bundle result = new Bundle();
+            result.putInt("color", Color.rgb(red, green, blue));
+            getParentFragmentManager().setFragmentResult("color_picked", result);
+            dismiss();
         });
 
         return new android.app.AlertDialog.Builder(requireContext())

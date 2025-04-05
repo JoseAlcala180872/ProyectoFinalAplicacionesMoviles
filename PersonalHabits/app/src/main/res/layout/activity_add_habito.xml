@@ -152,8 +152,8 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="4dp">
 
-        <ImageView
-            android:id="@+id/ivCalendar"
+        <ImageButton
+            android:id="@+id/ibHora"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_calendar"/>
