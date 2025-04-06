@@ -36,9 +36,9 @@ class DashboardFragment : Fragment() {
     }
 
     private fun setupMockCharts() {
-        // Mock habit completion counts by category
+
         val weeklyData = mapOf(
-            "Ejercicio" to Pair(4, 2),  // Pair(completed, uncompleted)
+            "Ejercicio" to Pair(4, 2),
             "Estudio" to Pair(2, 5),
             "Salud" to Pair(3, 3),
             "Otro" to Pair(1, 6)
@@ -59,13 +59,11 @@ class DashboardFragment : Fragment() {
         val completedEntries = mutableListOf<BarEntry>()
         val uncompletedEntries = mutableListOf<BarEntry>()
 
-        // Create two bars per category (completed and uncompleted)
         data.entries.forEachIndexed { index, entry ->
-            completedEntries.add(BarEntry(index.toFloat(), entry.value.first.toFloat()))  // Completed
-            uncompletedEntries.add(BarEntry(index.toFloat() + 0.3f, entry.value.second.toFloat()))  // Incompleted (shifted by 0.3 to be side-by-side)
+            completedEntries.add(BarEntry(index.toFloat(), entry.value.first.toFloat()))
+            uncompletedEntries.add(BarEntry(index.toFloat() + 0.3f, entry.value.second.toFloat()))
         }
 
-        // Create datasets for completed and uncompleted habits
         val completedDataSet = BarDataSet(completedEntries, completedLabel)
         completedDataSet.color = ContextCompat.getColor(requireContext(), R.color.veryPurple)
 
@@ -82,13 +80,12 @@ class DashboardFragment : Fragment() {
             axisLeft.setDrawGridLines(false)
             axisRight.isEnabled = false
             description.isEnabled = false
-            legend.isEnabled = false
+            legend.isEnabled = true
             setFitBars(true)
 
-            // Adjust bar width and space between bars
-            setScaleEnabled(false)  // Disable scaling to prevent zooming
-            barData.barWidth = 0.3f  // Adjust the width of bars (optional)
-            var groupSpace = 0.1f  // Adjust space between the groups of bars
+            setScaleEnabled(false)
+            barData.barWidth = 0.3f
+            var groupSpace = 0.1f
 
             invalidate()
         }
@@ -99,5 +96,3 @@ class DashboardFragment : Fragment() {
         _binding = null
     }
 }
-
-
