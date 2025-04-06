@@ -47,6 +47,7 @@
         android:progress="0"
         android:max="100"
         android:progressTint="@color/veryPurple"
+        android:progressBackgroundTint="@color/mediumPurple"
         android:backgroundTint="@color/mediumPurple"
         app:layout_constraintBottom_toTopOf="@id/addHabitButton"
         app:layout_constraintStart_toStartOf="parent"
