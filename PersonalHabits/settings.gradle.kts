@@ -1,3 +1,6 @@
+import org.gradle.kotlin.dsl.maven
+import org.gradle.kotlin.dsl.repositories
+
 pluginManagement {
     repositories {
         google {
@@ -15,6 +18,7 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
+        maven ("https://jitpack.io")
         mavenCentral()
         jcenter()
     }

@@ -154,14 +154,13 @@
                 android:text="Semanal"
                 android:textSize="16sp"
                 android:gravity="center"/>
-            <!--
+
                        <com.github.mikephil.charting.charts.BarChart
-                           android:id="@+id/barChart1"
+                           android:id="@+id/barChartWeek"
                            android:layout_width="match_parent"
                            android:layout_height="200dp"
                            android:layout_marginTop="0dp"
                            tools:ignore="MissingClass" />
-           -->
             <!--Graph 2: BarChart -->
 
             <TextView
@@ -170,14 +169,12 @@
                 android:text="Mensual"
                 android:textSize="16sp"
                 android:gravity="center"/>
-            <!--
                         <com.github.mikephil.charting.charts.BarChart
-                            android:id="@+id/barChart2"
+                            android:id="@+id/barChartMonth"
                             android:layout_width="match_parent"
                             android:layout_height="200dp"
                             android:layout_marginTop="5dp"
                             tools:ignore="MissingClass" />
-            -->
         </LinearLayout>
 
     </ScrollView>
