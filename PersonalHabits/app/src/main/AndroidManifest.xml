@@ -19,16 +19,11 @@
         <activity
             android:name=".AddHabito"
             android:exported="false" />
-        <activity
-            android:name=".Habitos"
-            android:exported="false" />
+
         <activity
             android:name=".Registro"
             android:exported="false" />
-        <activity
-            android:name=".Progreso"
-            android:exported="false"
-            android:label="@string/title_activity_progreso" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

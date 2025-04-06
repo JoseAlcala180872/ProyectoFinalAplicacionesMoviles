@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.database.DatabaseReference
+import android.widget.ArrayAdapter
 import com.google.firebase.database.FirebaseDatabase
 
 
@@ -33,10 +35,10 @@ class AddHabito : AppCompatActivity() {
     private lateinit var btnAceptar: Button
     private lateinit var btnCancelar: Button
     private lateinit var btnColor: ImageButton
-    private lateinit var etCategoria: EditText
+    private lateinit var etCategoria: AutoCompleteTextView
     private var selectedColor: Int = Color.GRAY
     private lateinit var database: DatabaseReference
-
+    private lateinit var userRepository: UserRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +61,9 @@ class AddHabito : AppCompatActivity() {
         btnCancelar = findViewById(R.id.btnCancelar)
         btnColor = findViewById(R.id.btnColorPicker)
         database = FirebaseDatabase.getInstance().reference.child("habitos")
+        userRepository = UserRepository()
 
+        setupCategoryDropdown()
 
         ibHora.setOnClickListener {
             showTimePickerDialog()
@@ -85,6 +89,14 @@ class AddHabito : AppCompatActivity() {
         supportFragmentManager.setFragmentResultListener("color_picked", this) { _, bundle ->
             selectedColor = bundle.getInt("color", Color.GRAY)
             btnColor.setBackgroundColor(selectedColor)
+        }
+    }
+
+    private fun setupCategoryDropdown() {
+        userRepository.getCategories { categories ->
+            Log.d(null,categories.toString())
+            val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, categories)
+            etCategoria.setAdapter(adapter)
         }
     }
 
@@ -132,7 +144,7 @@ class AddHabito : AppCompatActivity() {
             categoria = categoria
         )
 
-        UserRepository().addHabit(nuevoHabito) { success ->
+        userRepository.addHabit(nuevoHabito) { success ->
             if (success) {
                 Log.d("AddHabito", "Hábito guardado exitosamente")
                 val intent = Intent(this, MenuFragment::class.java)
@@ -142,6 +154,9 @@ class AddHabito : AppCompatActivity() {
                 Log.e("AddHabito", "Error al guardar el hábito")
             }
         }
+
+        userRepository.addCategory(categoria) {  }
+
     }
 
 
