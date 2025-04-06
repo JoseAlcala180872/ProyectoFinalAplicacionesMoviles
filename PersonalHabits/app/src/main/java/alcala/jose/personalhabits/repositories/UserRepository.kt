@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -15,6 +16,38 @@ class UserRepository {
 
     private val database = FirebaseDatabase.getInstance().getReference("users")
     private val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+    fun getPendingHabitsForToday(callback: (List<Habito>) -> Unit) {
+        val userRef = userId?.let { database.child(it) } ?: return
+
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val currentDate = dateFormat.format(Date())
+        val todayCode = getDayCodeFromDate(currentDate)
+
+        getDoneHabits(currentDate) { completedHabitIds ->
+            userRef.child("habits").get()
+                .addOnSuccessListener { snapshot ->
+                    val pendingHabits = mutableListOf<Habito>()
+                    for (habitSnapshot in snapshot.children) {
+                        val habit = habitSnapshot.getValue(Habito::class.java)
+                        habit?.let {
+                            val frequency = it.frecuencia ?: emptyList()
+                            val isForToday = todayCode in frequency
+                            val isCompleted = completedHabitIds.contains(it.id)
+
+                            if (isForToday && !isCompleted) {
+                                pendingHabits.add(it)
+                            }
+                        }
+                    }
+                    callback(pendingHabits)
+                }
+                .addOnFailureListener {
+                    callback(emptyList())
+                }
+        }
+    }
+
 
     fun addColor(colorName: String, colorHex: String, callback: (Boolean) -> Unit) {
         val userRef = userId?.let { database.child(it) }
@@ -180,6 +213,23 @@ class UserRepository {
             ?.addOnFailureListener {
                 callback(emptyList())
             }
+    }
+
+    fun getDayCodeFromDate(date: String): String {
+        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val dateObj = sdf.parse(date) ?: return ""
+        val calendar = Calendar.getInstance().apply { time = dateObj }
+
+        return when (calendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.MONDAY -> "L"
+            Calendar.TUESDAY -> "M"
+            Calendar.WEDNESDAY -> "X"
+            Calendar.THURSDAY -> "J"
+            Calendar.FRIDAY -> "V"
+            Calendar.SATURDAY -> "S"
+            Calendar.SUNDAY -> "D"
+            else -> ""
+        }
     }
 }
 

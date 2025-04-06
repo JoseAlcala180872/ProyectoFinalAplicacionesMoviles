@@ -1,13 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Habitos">
+    android:fitsSystemWindows="true"
+    tools:context=".MenuFragment">
 
-
+    <!-- Title -->
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -15,23 +16,116 @@
         android:text="Hábitos"
         android:textAlignment="center"
         android:textSize="@dimen/titleSize"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/recyclerView" />
 
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/textView"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="15dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginBottom="1dp"
-        android:layout_weight="1"
-        android:padding="16dp" />
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintBottom_toTopOf="@id/progressBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Completion ProgressBar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:minHeight="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:progress="0"
+        android:max="100"
+        android:progressTint="@color/veryPurple"
+        android:backgroundTint="@color/mediumPurple"
+        app:layout_constraintBottom_toTopOf="@id/addHabitButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/progressBar"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="20dp"
+        android:layout_width="wrap_content"
+        >
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/progressBar"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            >
+            <ImageView
+                android:id="@+id/icon_color"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/done_square"
+                android:contentDescription="icono" />
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:id="@+id/tvCompletedHabits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hábitos completados"
+                android:textAlignment="center"
+                android:textSize="12dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/recyclerView" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/progressBar"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            >
+            <ImageView
+                android:id="@+id/icon_color2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/undone_square"
+                android:contentDescription="icono" />
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:id="@+id/tvUnCompletedHabits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hábitos sin completar"
+                android:textAlignment="center"
+                android:textSize="12dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/recyclerView" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 
     <ImageButton
         android:id="@+id/addHabitButton"
@@ -44,6 +138,5 @@
         android:src="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

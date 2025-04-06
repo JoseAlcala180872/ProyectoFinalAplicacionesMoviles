@@ -15,6 +15,7 @@ import alcala.jose.personalhabits.ui.HabitAdapter
 import android.content.Intent
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.Observer
@@ -61,6 +62,19 @@ class HomeFragment : Fragment() {
             val intent = Intent(activity, AddHabito::class.java)
             startActivity(intent)
         }
+
+        val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
+
+        fun updateProgress(completed: Int, total: Int) {
+            if (total == 0) {
+                progressBar.progress = 0
+                return
+            }
+            val percentage = (completed.toFloat() / total * 100).toInt()
+            progressBar.progress = percentage
+        }
+
+        updateProgress(5,10)
 
     }
 
