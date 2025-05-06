@@ -3,73 +3,115 @@ package alcala.jose.personalhabits;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.SeekBar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+
+import alcala.jose.personalhabits.repositories.ColorRepository;
+import kotlin.Pair;
 
 public class ColorPickerDialogFragment extends DialogFragment {
 
-    private EditText colorNameInput;
-    private View colorPreview;
-    private SeekBar redSeekBar, greenSeekBar, blueSeekBar;
-    private int red = 128, green = 128, blue = 128;
+    private RecyclerView colorRecyclerView;
+    private ColorAdapter colorAdapter;
+    private String selectedColor = "#FFFFFF";  // Default white
+    private View dialogView;  // Store inflated view
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_color_picker, null);
+        dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_color_picker, null);
 
-        colorNameInput = view.findViewById(R.id.ColorNameInput);
-        colorPreview = view.findViewById(R.id.colorPreview);
-        redSeekBar = view.findViewById(R.id.redSeekBar);
-        greenSeekBar = view.findViewById(R.id.greenSeekBar);
-        blueSeekBar = view.findViewById(R.id.blueSeekBar);
-        Button confirmButton = view.findViewById(R.id.confirmButton);
+        colorRecyclerView = dialogView.findViewById(R.id.colorRecyclerView);
+        Button confirmButton = dialogView.findViewById(R.id.confirmButton);
 
-        // Set initial color preview
-        updateColorPreview();
+        // Set up RecyclerView
+        colorRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        colorAdapter = new ColorAdapter(new ColorRepository().getColors(), color -> {
+            selectedColor = color;
+            updateColorPreview();
+        });
+        colorRecyclerView.setAdapter(colorAdapter);
 
-        // SeekBar listeners
-        redSeekBar.setOnSeekBarChangeListener(colorChangeListener);
-        greenSeekBar.setOnSeekBarChangeListener(colorChangeListener);
-        blueSeekBar.setOnSeekBarChangeListener(colorChangeListener);
-
+        // Confirm color selection
         confirmButton.setOnClickListener(v -> {
             Bundle result = new Bundle();
-            result.putInt("color", Color.rgb(red, green, blue));
+            result.putString("color", selectedColor);
             getParentFragmentManager().setFragmentResult("color_picked", result);
             dismiss();
         });
 
         return new android.app.AlertDialog.Builder(requireContext())
-                .setView(view)
+                .setView(dialogView)
                 .setTitle("Escoger Color")
                 .create();
     }
 
-    private final SeekBar.OnSeekBarChangeListener colorChangeListener = new SeekBar.OnSeekBarChangeListener() {
+    private void updateColorPreview() {
+        if (dialogView != null) {
+            View colorPreview = dialogView.findViewById(R.id.colorPreviewDialog);
+            if (colorPreview != null) {
+                colorPreview.setBackgroundColor(Color.parseColor(selectedColor));
+            }
+        }
+    }
+
+    // Adapter for RecyclerView
+    private static class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHolder> {
+
+        private final List<Pair<String, String>> colors;
+        private final OnColorSelectedListener listener;
+
+        ColorAdapter(@NotNull List<@NotNull Pair<@NotNull String, @NotNull String>> colors, OnColorSelectedListener listener) {
+            this.colors = colors;
+            this.listener = listener;
+        }
+
+        @NonNull
         @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (seekBar == redSeekBar) red = progress;
-            else if (seekBar == greenSeekBar) green = progress;
-            else if (seekBar == blueSeekBar) blue = progress;
-            updateColorPreview();
+        public ColorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.color_item, parent, false);
+            return new ColorViewHolder(view);
         }
 
         @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {}
+        public void onBindViewHolder(@NonNull ColorViewHolder holder, int position) {
+            Pair<String, String> color = colors.get(position);
+            holder.colorName.setText(color.getFirst());
+            holder.colorPreview.setBackgroundColor(Color.parseColor(color.getSecond()));
+
+            holder.itemView.setOnClickListener(v -> listener.onColorSelected(color.getSecond()));
+        }
 
         @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {}
-    };
+        public int getItemCount() {
+            return colors.size();
+        }
 
-    private void updateColorPreview() {
-        int color = Color.rgb(red, green, blue);
-        colorPreview.setBackgroundColor(color);
+        static class ColorViewHolder extends RecyclerView.ViewHolder {
+            TextView colorName;
+            View colorPreview;
+
+            ColorViewHolder(View itemView) {
+                super(itemView);
+                colorName = itemView.findViewById(R.id.colorName);
+                colorPreview = itemView.findViewById(R.id.colorPreview);
+            }
+        }
+
+        interface OnColorSelectedListener {
+            void onColorSelected(String color);
+        }
     }
 }

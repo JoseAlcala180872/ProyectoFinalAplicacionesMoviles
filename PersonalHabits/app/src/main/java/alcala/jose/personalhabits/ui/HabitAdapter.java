@@ -13,9 +13,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import alcala.jose.personalhabits.Dominio.Habito;
 import alcala.jose.personalhabits.R;
+import alcala.jose.personalhabits.repositories.HabitRepository;
 import alcala.jose.personalhabits.repositories.UserRepository;
 
 public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder> {
@@ -24,7 +28,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
     ArrayList<Habito> habitList;
 
     UserRepository userRepository = new UserRepository();
-
+    HabitRepository habitRepository = new HabitRepository();
     public HabitAdapter(Context context, ArrayList<Habito> habitList) {
         this.context = context;
         this.habitList = habitList;
@@ -41,6 +45,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Habito habit = habitList.get(position);
+
 
         Drawable drawable = ContextCompat.getDrawable(context, R.drawable.habit_icon_color);
         if (drawable != null) {
@@ -74,7 +79,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
                     Log.d("HabitAdapter", "Edit selected for habit: " + habit.getId());
                 } else if (itemId == R.id.menu_delete) {
                     Log.d("HabitAdapter", "Delete selected for habit: " + habit.getId());
-                    userRepository.deleteHabit(habit.getId(),success -> {
+                    habitRepository.deleteHabit(habit.getId(),success -> {
                         if (success) {
 
                         } else {

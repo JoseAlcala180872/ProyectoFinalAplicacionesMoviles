@@ -1,106 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="20dp"
-    android:background="@color/lessPurple">
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/chooseColorTittle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Escoger color"
-        android:textAlignment="center"
-        android:textSize="24sp" />
-
-    <TextView
-        android:id="@+id/colorNameText"
-        android:layout_width="match_parent"
-        android:textAlignment="center"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Nombre del color" />
-
-    <EditText
-        android:alpha="0.40"
-        android:id="@+id/ColorNameInput"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:background="@color/mediumPurple"
-        android:hint="Nombre"
-        android:inputType="text"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:textSize="14sp" />
-
-    <!-- Color Preview Box -->
+    <!-- Color Preview -->
     <View
-        android:id="@+id/colorPreview"
+        android:id="@+id/colorPreviewDialog"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:background="@android:color/darker_gray" />
+        android:background="#FFFFFF"/>
 
-    <!-- RGB SeekBars -->
-    <TextView
+    <!-- RecyclerView for color list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/colorRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Red"
-        android:textAlignment="center"
-        android:textColor="@color/white" />
-
-    <SeekBar
-        android:id="@+id/redSeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="255"
-        android:progress="128" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Green"
-        android:textAlignment="center"
-        android:textColor="@color/white" />
-
-    <SeekBar
-        android:id="@+id/greenSeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="255"
-        android:progress="128" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Blue"
-        android:textAlignment="center"
-        android:textColor="@color/white" />
-
-    <SeekBar
-        android:id="@+id/blueSeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="255"
-        android:progress="128" />
+        android:layout_marginTop="16dp"/>
 
     <!-- Confirm Button -->
     <Button
-        android:backgroundTint="@color/veryPurple"
         android:id="@+id/confirmButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="Confirmar"
-        android:alpha="0.7"
-        android:textColorLink="#BEBEBE"
-        app:rippleColor="#FCF5FD" />
+        android:text="Confirmar"/>
+
 </LinearLayout>

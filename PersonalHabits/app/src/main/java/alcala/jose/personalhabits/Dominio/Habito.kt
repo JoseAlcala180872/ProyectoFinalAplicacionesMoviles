@@ -7,5 +7,6 @@ data class Habito(
     var hora: String = "",
     var frecuencia: List<String> = listOf(),
     var color: Int = 0,
-    var categoria: String = ""
-)
+    var categoria: String = "",
+    val userId: String = "",
+    )

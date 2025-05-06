@@ -1,6 +1,7 @@
 package alcala.jose.personalhabits
 
 import alcala.jose.personalhabits.Dominio.Habito
+import alcala.jose.personalhabits.repositories.HabitRepository
 import alcala.jose.personalhabits.repositories.UserRepository
 import android.app.TimePickerDialog
 import android.content.Intent
@@ -19,13 +20,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.firebase.database.DatabaseReference
 import android.widget.ArrayAdapter
 import com.google.firebase.database.FirebaseDatabase
 
-
 class AddHabito : AppCompatActivity() {
-
 
     private lateinit var etNombre: EditText
     private lateinit var etDescripcion: EditText
@@ -37,7 +35,7 @@ class AddHabito : AppCompatActivity() {
     private lateinit var btnColor: ImageButton
     private lateinit var etCategoria: AutoCompleteTextView
     private var selectedColor: Int = Color.GRAY
-    private lateinit var database: DatabaseReference
+    private lateinit var habitRepository: HabitRepository
     private lateinit var userRepository: UserRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +48,6 @@ class AddHabito : AppCompatActivity() {
             insets
         }
 
-
         etNombre = findViewById(R.id.etNombre)
         etDescripcion = findViewById(R.id.etDescripcion)
         llFrecuencia = findViewById(R.id.llFrecuencia)
@@ -60,7 +57,7 @@ class AddHabito : AppCompatActivity() {
         btnAceptar = findViewById(R.id.btnAceptar)
         btnCancelar = findViewById(R.id.btnCancelar)
         btnColor = findViewById(R.id.btnColorPicker)
-        database = FirebaseDatabase.getInstance().reference.child("habitos")
+        habitRepository = HabitRepository()
         userRepository = UserRepository()
 
         setupCategoryDropdown()
@@ -69,43 +66,38 @@ class AddHabito : AppCompatActivity() {
             showTimePickerDialog()
         }
 
-
         btnAceptar.setOnClickListener {
             guardarHabito()
         }
 
-
         btnCancelar.setOnClickListener {
             finish()
         }
-
 
         btnColor.setOnClickListener {
             val dialog = ColorPickerDialogFragment()
             dialog.show(supportFragmentManager, "colorPickerDialog")
         }
 
-
         supportFragmentManager.setFragmentResultListener("color_picked", this) { _, bundle ->
-            selectedColor = bundle.getInt("color", Color.GRAY)
+            val colorString = bundle.getString("color", "#777777")
+            selectedColor = Color.parseColor(colorString)
             btnColor.setBackgroundColor(selectedColor)
         }
+
     }
 
     private fun setupCategoryDropdown() {
         userRepository.getCategories { categories ->
-            Log.d(null,categories.toString())
             val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, categories)
             etCategoria.setAdapter(adapter)
         }
     }
 
-
     private fun showTimePickerDialog() {
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
-
 
         val timePickerDialog = TimePickerDialog(
             this,
@@ -117,10 +109,8 @@ class AddHabito : AppCompatActivity() {
             true
         )
 
-
         timePickerDialog.show()
     }
-
 
     private fun guardarHabito() {
         val nombre = etNombre.text.toString().trim()
@@ -135,16 +125,16 @@ class AddHabito : AppCompatActivity() {
         }
 
         val nuevoHabito = Habito(
-            id = "",
             nombre = nombre,
             descripcion = descripcion,
             hora = hora,
             frecuencia = diasSeleccionados,
             color = selectedColor,
-            categoria = categoria
+            categoria = categoria,
+            userId = userRepository.userId.toString()
         )
 
-        userRepository.addHabit(nuevoHabito) { success ->
+        habitRepository.addHabit(nuevoHabito) { success ->
             if (success) {
                 Log.d("AddHabito", "Hábito guardado exitosamente")
                 val intent = Intent(this, MenuFragment::class.java)
@@ -155,10 +145,8 @@ class AddHabito : AppCompatActivity() {
             }
         }
 
-        userRepository.addCategory(categoria) {  }
-
+        userRepository.addCategory(categoria) { }
     }
-
 
     private fun obtenerDiasSeleccionados(): List<String> {
         val diasSeleccionados = mutableListOf<String>()

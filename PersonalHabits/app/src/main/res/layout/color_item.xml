@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- Color Name -->
+    <TextView
+        android:id="@+id/colorName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Color Name"
+        android:paddingEnd="16dp"
+        android:layout_gravity="center_vertical"/>
+
+    <!-- Color Preview -->
+    <View
+        android:id="@+id/colorPreview"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="#FFFFFF"
+        android:layout_gravity="center_vertical"/>
+</LinearLayout>
