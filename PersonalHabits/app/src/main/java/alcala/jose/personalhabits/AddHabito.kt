@@ -1,6 +1,7 @@
 package alcala.jose.personalhabits
 
 import alcala.jose.personalhabits.Dominio.Habito
+import alcala.jose.personalhabits.repositories.CategoryRepository
 import alcala.jose.personalhabits.repositories.HabitRepository
 import alcala.jose.personalhabits.repositories.UserRepository
 import android.app.TimePickerDialog
@@ -21,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import com.google.firebase.database.FirebaseDatabase
 
 class AddHabito : AppCompatActivity() {
@@ -33,10 +35,11 @@ class AddHabito : AppCompatActivity() {
     private lateinit var btnAceptar: Button
     private lateinit var btnCancelar: Button
     private lateinit var btnColor: ImageButton
-    private lateinit var etCategoria: AutoCompleteTextView
+    private lateinit var spCategoria: Spinner
     private var selectedColor: Int = Color.GRAY
     private lateinit var habitRepository: HabitRepository
     private lateinit var userRepository: UserRepository
+    private lateinit var categoryRepository: CategoryRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,12 +56,13 @@ class AddHabito : AppCompatActivity() {
         llFrecuencia = findViewById(R.id.llFrecuencia)
         ibHora = findViewById(R.id.ibHora)
         tvHoraSeleccionada = findViewById(R.id.tvHoraSeleccionada)
-        etCategoria = findViewById(R.id.etCategoria)
+        spCategoria = findViewById(R.id.spCategoria)
         btnAceptar = findViewById(R.id.btnAceptar)
         btnCancelar = findViewById(R.id.btnCancelar)
         btnColor = findViewById(R.id.btnColorPicker)
         habitRepository = HabitRepository()
         userRepository = UserRepository()
+        categoryRepository = CategoryRepository()
 
         setupCategoryDropdown()
 
@@ -88,9 +92,18 @@ class AddHabito : AppCompatActivity() {
     }
 
     private fun setupCategoryDropdown() {
-        userRepository.getCategories { categories ->
-            val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, categories)
-            etCategoria.setAdapter(adapter)
+        // Get user categories and add default categories if not present
+        userRepository.getCategories { userCategories ->
+            val allCategories = mutableSetOf<String>()
+            allCategories.addAll(userCategories)
+            allCategories.addAll(categoryRepository.getCategories())
+
+            val adapter = ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_dropdown_item,
+                allCategories.toList()
+            )
+            spCategoria.adapter = adapter
         }
     }
 
@@ -117,7 +130,7 @@ class AddHabito : AppCompatActivity() {
         val descripcion = etDescripcion.text.toString().trim()
         val hora = tvHoraSeleccionada.text.toString()
         val diasSeleccionados = obtenerDiasSeleccionados()
-        val categoria = etCategoria.text.toString().trim()
+        val categoria = spCategoria.selectedItem.toString()
 
         if (nombre.isEmpty() || descripcion.isEmpty() || hora.isEmpty() || diasSeleccionados.isEmpty() || categoria.isEmpty()) {
             etNombre.error = "Los campos no pueden estar vacíos"
@@ -145,7 +158,11 @@ class AddHabito : AppCompatActivity() {
             }
         }
 
-        userRepository.addCategory(categoria) { }
+        userRepository.getCategories { userCategories ->
+            if (!userCategories.contains(categoria)) {
+                userRepository.addCategory(categoria) {}
+            }
+        }
     }
 
     private fun obtenerDiasSeleccionados(): List<String> {
