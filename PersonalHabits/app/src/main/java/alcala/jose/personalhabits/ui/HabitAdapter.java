@@ -61,7 +61,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
         holder.habitDescription.setText(habit.getDescripcion());
         holder.habitCategory.setText(habit.getCategoria());
 
-        
+
 
         holder.completeButton.setOnClickListener(v -> {
             userRepository.updateCompletionStatus(habit.getId(), true, success -> {
@@ -87,12 +87,12 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
                     intent.putExtra("habitDescription", habit.getDescripcion());
                     intent.putExtra("habitColor", habit.getColor());
                     intent.putExtra("habitCategory", habit.getCategoria());
-                    //intent.putExtra("habitFrequency", (CharSequence) habit.getFrecuencia());
+                    intent.putStringArrayListExtra("habitFrequency", (ArrayList<String>) habit.getFrecuencia());
                     intent.putExtra("habitTime", habit.getHora());
 
                     context.startActivity(intent);
                 } else if (itemId == R.id.menu_delete) {
-                    Log.d("HabitAdapter", "Delete selected for habit: " + habit.getId());
+                    Log.d("HabitAdapter", "Delete selected for habit: " +  (ArrayList<String>) habit.getFrecuencia());
                     habitRepository.deleteHabit(habit.getId(),success -> {
                         if (success) {
 
