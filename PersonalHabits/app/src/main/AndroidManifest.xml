@@ -13,17 +13,18 @@
         android:theme="@style/Theme.PersonalHabits"
         tools:targetApi="31">
         <activity
+            android:name=".EditHabito"
+            android:exported="false" />
+        <activity
             android:name=".MenuFragment"
             android:exported="false"
             android:label="@string/title_activity_menu_fragment" />
         <activity
             android:name=".AddHabito"
             android:exported="false" />
-
         <activity
             android:name=".Registro"
             android:exported="false" />
-
         <activity
             android:name=".MainActivity"
             android:exported="true">
