@@ -44,7 +44,6 @@ class EditHabito : AppCompatActivity() {
         val bundle = intent.extras
         val nombre: EditText = findViewById(R.id.etNombreEdit)
         val descripcion: EditText = findViewById(R.id.etDescripcionEdit)
-        val color: Spinner = findViewById(R.id.spColorEdit)
         val cbLunesEdit: CheckBox = findViewById(R.id.cbLunesEdit)
         val cbMartesEdit: CheckBox = findViewById(R.id.cbMartesEdit)
         val cbMiercolesEdit: CheckBox = findViewById(R.id.cbMiercolesEdit)
