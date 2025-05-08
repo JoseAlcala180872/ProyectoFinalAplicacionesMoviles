@@ -10,11 +10,11 @@ import com.google.firebase.database.FirebaseDatabase
 class HomeViewModel : ViewModel() {
 
     private val userRepository = UserRepository()
-    private val HabitRepository = HabitRepository()
+    private val habitRepository = HabitRepository()
     val habitsLiveData: MutableLiveData<List<Habito>> = MutableLiveData()
 
     fun fetchHabits() {
-        HabitRepository.getHabits { habits ->
+        habitRepository.getPendingHabitsForToday { habits ->
             habitsLiveData.value = habits
         }
     }
