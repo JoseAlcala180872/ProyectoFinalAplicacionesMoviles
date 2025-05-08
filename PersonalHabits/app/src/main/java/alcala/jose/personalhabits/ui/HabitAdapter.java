@@ -83,6 +83,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
                     Log.d("HabitAdapter", "Edit selected for habit: " + habit.getId());
                     Intent intent = new Intent(context, EditHabito.class);
                     intent.putExtra("habitId", habit.getId());
+                    intent.putExtra("userId", habit.getUserId());
                     intent.putExtra("habitName", habit.getNombre());
                     intent.putExtra("habitDescription", habit.getDescripcion());
                     intent.putExtra("habitColor", habit.getColor());
