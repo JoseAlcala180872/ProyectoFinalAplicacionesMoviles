@@ -6,6 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".EditHabito"
+    android:layout_margin="20dp"
+
     android:orientation="vertical">
 
     <TextView
@@ -93,30 +95,12 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="12dp"/>
 
-    <LinearLayout
-        android:id="@+id/llColorEdit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/lessPurple"
-        android:padding="10dp"
-        app:layout_constraintTop_toBottomOf="@id/tvColorEdit"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="4dp">
-
-        <Spinner
-            android:id="@+id/spColorEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
         <ImageButton
             android:id="@+id/btnColorPickerEdit"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_palette"
             android:background="?attr/selectableItemBackground"/>
-    </LinearLayout>
 
     <TextView
         android:id="@+id/tvFrecuenciaEdit"
@@ -125,8 +109,6 @@
         android:text="Frecuencia semanal"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/llColorEdit"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="12dp"/>
 
     <LinearLayout
@@ -134,8 +116,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/tvFrecuenciaEdit"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="4dp">
 
         <CheckBox
@@ -234,6 +214,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="80dp"
         android:layout_marginBottom="16dp">
 
         <Button

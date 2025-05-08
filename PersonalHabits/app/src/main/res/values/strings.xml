@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">PersonalHabits</string>
     <string name="title_activity_progreso">Progreso</string>
-    <string name="title_home">Habitos</string>
+    <string name="title_home">Habitos diarios</string>
     <string name="title_dashboard">Progreso</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_notifications">Habitos</string>
     <string name="title_activity_menu_fragment">MenuFragment</string>
 </resources>

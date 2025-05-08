@@ -78,30 +78,15 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="12dp"/>
 
-    <LinearLayout
-        android:id="@+id/llColor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/lessPurple"
-        android:padding="10dp"
-        app:layout_constraintTop_toBottomOf="@id/tvColor"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="4dp">
-
-        <Spinner
-            android:id="@+id/spColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
 
         <ImageButton
             android:id="@+id/btnColorPicker"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_palette"
+            app:layout_constraintTop_toBottomOf="@id/tvColor"
+            app:layout_constraintStart_toStartOf="parent"
             android:background="?attr/selectableItemBackground"/>
-    </LinearLayout>
 
 
     <TextView
@@ -132,7 +117,7 @@
         android:text="Frecuencia semanal"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/llColor"
+        app:layout_constraintTop_toBottomOf="@id/btnColorPicker"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="12dp"/>
 

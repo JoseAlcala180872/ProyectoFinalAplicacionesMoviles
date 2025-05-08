@@ -2,18 +2,14 @@ package alcala.jose.personalhabits.repositories
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 class UserRepository {
     private val database = FirebaseDatabase.getInstance().reference
     internal val userId = FirebaseAuth.getInstance().currentUser?.uid
+    private val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
 
     fun getCategories(callback: (List<String>) -> Unit) {
         val userRef = userId?.let { database.child("users").child(it).child("categories") }
@@ -22,6 +18,7 @@ class UserRepository {
                 val categories = snapshot.children.mapNotNull { it.getValue(String::class.java) }
                 callback(categories)
             }
+
             override fun onCancelled(error: DatabaseError) {}
         })
     }
@@ -35,16 +32,20 @@ class UserRepository {
     }
 
     fun updateCompletionStatus(habitId: String, isCompleted: Boolean, callback: (Boolean) -> Unit) {
-        val date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
-
-        // Use push() to create a new unique ID for each entry, instead of overwriting
+        val date = dateFormat.format(Date())
         val userCompletionRef = database.child("users").child(userId.toString()).child("daily_completions").child(date)
 
         userCompletionRef.child(habitId).setValue(isCompleted)
-            .addOnSuccessListener { callback(true) }
-            .addOnFailureListener { callback(false) }
+            .addOnSuccessListener {
+                checkAndUpdateStreak { streak ->
+                    Log.d("UserRepository", "Streak updated to $streak")
+                    callback(true)
+                }
+            }
+            .addOnFailureListener {
+                callback(false)
+            }
     }
-
 
     fun getDoneHabits(date: String, callback: (List<String>) -> Unit) {
         database.child("users").child(userId.toString()).child("daily_completions").child(date).get()
@@ -54,7 +55,9 @@ class UserRepository {
                 }.mapNotNull { it.key }
                 callback(doneHabits)
             }
-            .addOnFailureListener { callback(emptyList()) }
+            .addOnFailureListener {
+                callback(emptyList())
+            }
     }
 
     fun getDayCodeFromDate(date: String): String {
@@ -70,5 +73,66 @@ class UserRepository {
             Calendar.SUNDAY -> "D"
             else -> ""
         }
+    }
+
+    fun getStreak(callback: (Int) -> Unit) {
+        database.child("users").child(userId.toString()).child("streak").get()
+            .addOnSuccessListener { snapshot ->
+                val streak = snapshot.getValue(Int::class.java) ?: 0
+                callback(streak)
+            }
+            .addOnFailureListener {
+                callback(0)
+            }
+    }
+
+
+    private fun checkAndUpdateStreak(callback: (Int) -> Unit) {
+        val today = dateFormat.format(Date())
+        val yesterday = Calendar.getInstance().apply {
+            time = dateFormat.parse(today)!!
+            add(Calendar.DATE, -1)
+        }.let { dateFormat.format(it.time) }
+
+        val userRef = database.child("users").child(userId.toString())
+
+        userRef.child("daily_completions").child(today)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(todaySnapshot: DataSnapshot) {
+                    val hasCompletedToday = todaySnapshot.children.any {
+                        it.getValue(Boolean::class.java) == true
+                    }
+
+                    if (!hasCompletedToday) {
+                        callback(0)
+                        return
+                    }
+
+                    userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val lastDate = snapshot.child("lastCompletionDate").getValue(String::class.java)
+                            val currentStreak = snapshot.child("streak").getValue(Int::class.java) ?: 0
+
+                            val newStreak = when {
+                                lastDate == yesterday -> currentStreak + 1
+                                lastDate == today -> currentStreak
+                                else -> 1
+                            }
+
+                            userRef.child("streak").setValue(newStreak)
+                            userRef.child("lastCompletionDate").setValue(today)
+                            callback(newStreak)
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            callback(0)
+                        }
+                    })
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    callback(0)
+                }
+            })
     }
 }

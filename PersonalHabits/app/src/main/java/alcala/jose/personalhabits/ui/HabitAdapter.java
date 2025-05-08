@@ -30,12 +30,16 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
 
     Context context;
     ArrayList<Habito> habitList;
+    boolean showCompleteButton;  // New flag
 
     UserRepository userRepository = new UserRepository();
     HabitRepository habitRepository = new HabitRepository();
-    public HabitAdapter(Context context, ArrayList<Habito> habitList) {
+
+    // Updated constructor to accept the flag
+    public HabitAdapter(Context context, ArrayList<Habito> habitList, boolean showCompleteButton) {
         this.context = context;
         this.habitList = habitList;
+        this.showCompleteButton = showCompleteButton;  // Initialize the flag
     }
 
     @NonNull
@@ -50,7 +54,6 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Habito habit = habitList.get(position);
 
-
         Drawable drawable = ContextCompat.getDrawable(context, R.drawable.habit_icon_color);
         if (drawable != null) {
             drawable.mutate().setTint(habit.getColor());
@@ -61,16 +64,23 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
         holder.habitDescription.setText(habit.getDescripcion());
         holder.habitCategory.setText(habit.getCategoria());
 
+        // Hide the complete button if the flag is false
+        if (!showCompleteButton) {
+            holder.completeButton.setVisibility(View.GONE);  // Hide the button
+        } else {
+            holder.completeButton.setVisibility(View.VISIBLE);  // Show the button
 
-
-        holder.completeButton.setOnClickListener(v -> {
-            userRepository.updateCompletionStatus(habit.getId(), true, success -> {
-                if (success) {
-                } else {
-                }
-                return null;
+            holder.completeButton.setOnClickListener(v -> {
+                userRepository.updateCompletionStatus(habit.getId(), true, success -> {
+                    if (success) {
+                        // Do something on success
+                    } else {
+                        // Handle failure
+                    }
+                    return null;
+                });
             });
-        });
+        }
 
         holder.optionsButton.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(context, v);
@@ -83,6 +93,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
                     Log.d("HabitAdapter", "Edit selected for habit: " + habit.getId());
                     Intent intent = new Intent(context, EditHabito.class);
                     intent.putExtra("habitId", habit.getId());
+                    intent.putExtra("userId", habit.getUserId());
                     intent.putExtra("habitName", habit.getNombre());
                     intent.putExtra("habitDescription", habit.getDescripcion());
                     intent.putExtra("habitColor", habit.getColor());
@@ -92,12 +103,12 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
 
                     context.startActivity(intent);
                 } else if (itemId == R.id.menu_delete) {
-                    Log.d("HabitAdapter", "Delete selected for habit: " +  (ArrayList<String>) habit.getFrecuencia());
-                    habitRepository.deleteHabit(habit.getId(),success -> {
+                    Log.d("HabitAdapter", "Delete selected for habit: " + (ArrayList<String>) habit.getFrecuencia());
+                    habitRepository.deleteHabit(habit.getId(), success -> {
                         if (success) {
-
+                            // Handle success
                         } else {
-
+                            // Handle failure
                         }
                         return null;
                     });
