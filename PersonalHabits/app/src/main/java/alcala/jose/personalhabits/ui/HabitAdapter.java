@@ -1,5 +1,8 @@
 package alcala.jose.personalhabits.ui;
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import alcala.jose.personalhabits.Dominio.Habito;
+import alcala.jose.personalhabits.EditHabito;
 import alcala.jose.personalhabits.R;
 import alcala.jose.personalhabits.repositories.HabitRepository;
 import alcala.jose.personalhabits.repositories.UserRepository;
@@ -57,7 +61,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
         holder.habitDescription.setText(habit.getDescripcion());
         holder.habitCategory.setText(habit.getCategoria());
 
-        
+
 
         holder.completeButton.setOnClickListener(v -> {
             userRepository.updateCompletionStatus(habit.getId(), true, success -> {
@@ -77,8 +81,18 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
 
                 if (itemId == R.id.menu_edit) {
                     Log.d("HabitAdapter", "Edit selected for habit: " + habit.getId());
+                    Intent intent = new Intent(context, EditHabito.class);
+                    intent.putExtra("habitId", habit.getId());
+                    intent.putExtra("habitName", habit.getNombre());
+                    intent.putExtra("habitDescription", habit.getDescripcion());
+                    intent.putExtra("habitColor", habit.getColor());
+                    intent.putExtra("habitCategory", habit.getCategoria());
+                    intent.putStringArrayListExtra("habitFrequency", (ArrayList<String>) habit.getFrecuencia());
+                    intent.putExtra("habitTime", habit.getHora());
+
+                    context.startActivity(intent);
                 } else if (itemId == R.id.menu_delete) {
-                    Log.d("HabitAdapter", "Delete selected for habit: " + habit.getId());
+                    Log.d("HabitAdapter", "Delete selected for habit: " +  (ArrayList<String>) habit.getFrecuencia());
                     habitRepository.deleteHabit(habit.getId(),success -> {
                         if (success) {
 

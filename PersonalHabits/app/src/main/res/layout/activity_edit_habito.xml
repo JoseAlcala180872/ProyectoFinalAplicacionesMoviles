@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditHabito"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textViewEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Editar\nhábito"
+        android:textAlignment="center"
+        android:textSize="@dimen/titleSize"
+        android:layout_gravity="center" />
+    <TextView
+        android:id="@+id/tvNombreEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/textViewEdit"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <EditText
+        android:id="@+id/etNombreEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lessPurple"
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@id/tvNombreEdit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/tvDescripcionEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Descripción"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/etNombreEdit"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="12dp"/>
+
+
+    <EditText
+        android:id="@+id/etDescripcionEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lessPurple"
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@id/tvDescripcionEdit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/tvCategoriaEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Categoría"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/etDescripcionEdit"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <Spinner
+        android:id="@+id/spCategoriaEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lessPurple"
+        android:padding="10dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toBottomOf="@id/tvCategoriaEdit"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvColorEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Color"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/spCategoriaEdit"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <LinearLayout
+        android:id="@+id/llColorEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/lessPurple"
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@id/tvColorEdit"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="4dp">
+
+        <Spinner
+            android:id="@+id/spColorEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:id="@+id/btnColorPickerEdit"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_palette"
+            android:background="?attr/selectableItemBackground"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvFrecuenciaEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Frecuencia semanal"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/llColorEdit"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <LinearLayout
+        android:id="@+id/llFrecuenciaEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/tvFrecuenciaEdit"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="4dp">
+
+        <CheckBox
+            android:id="@+id/cbLunesEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="L" />
+
+        <CheckBox
+            android:id="@+id/cbMartesEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="M" />
+
+        <CheckBox
+            android:id="@+id/cbMiercolesEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X" />
+
+        <CheckBox
+            android:id="@+id/cbJuevesEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="J" />
+
+        <CheckBox
+            android:id="@+id/cbViernesEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="V" />
+
+        <CheckBox
+            android:id="@+id/cbSabadoEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="S" />
+
+        <CheckBox
+            android:id="@+id/cbDomingoEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="D" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tvHoraEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hora de recordatorio"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/llFrecuenciaEdit"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/llHoraEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/lessPurple"
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@id/tvHoraEdit"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/tvHoraSeleccionadaEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seleccionar hora"
+            android:layout_marginTop="2dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
+
+        <ImageButton
+            android:id="@+id/ibHoraEdit"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="2dp"
+            android:layout_width="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="24dp"
+
+            android:src="@drawable/ic_calendar"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <LinearLayout
+        android:id="@+id/llBotonesEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp">
+
+        <Button
+            android:id="@+id/btnCancelarEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Cancelar"
+            android:layout_weight="1"
+            android:backgroundTint="@color/mediumPurple"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:id="@+id/btnAceptarEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Aceptar"
+            android:layout_weight="1"
+            android:backgroundTint="@color/veryPurple"
+            android:textColor="@android:color/white"/>
+    </LinearLayout>
+
+</LinearLayout>

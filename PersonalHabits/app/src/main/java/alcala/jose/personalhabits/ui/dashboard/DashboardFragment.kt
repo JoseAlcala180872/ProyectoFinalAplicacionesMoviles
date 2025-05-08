@@ -8,7 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import alcala.jose.personalhabits.databinding.FragmentDashboardBinding
+import android.app.DatePickerDialog
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -16,11 +22,19 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var viewModel: DashboardViewModel
+    private var selectedCategory: String = ""
+    private var startDate: String = ""
+    private var endDate: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,34 +44,139 @@ class DashboardFragment : Fragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        setupMockCharts()
+        viewModel = ViewModelProvider(this).get(DashboardViewModel::class.java)
+
+        setupDatePickers()
+        setupCategorySelection()
+        setupChartObservers()
+        setupFilterButton()
+
+        // Set default dates and load initial data
+        val defaultDates = viewModel.getDefaultDates()
+        startDate = defaultDates.first
+        endDate = defaultDates.second
+
+        binding.fechaInicioInput.setText(startDate)
+        binding.fechaFinInput.setText(endDate)
+
+        // Load initial data
+        viewModel.loadStatsForDateRange(startDate, endDate, selectedCategory)
 
         return root
     }
 
-    private fun setupMockCharts() {
+    private fun setupDatePickers() {
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
 
-        val weeklyData = mapOf(
-            "Ejercicio" to Pair(4, 2),
-            "Estudio" to Pair(2, 5),
-            "Salud" to Pair(3, 3),
-            "Otro" to Pair(1, 6)
-        )
+        binding.fechaInicioInput.setOnClickListener {
+            showDatePicker { year, month, day ->
+                val calendar = Calendar.getInstance()
+                calendar.set(year, month, day)
+                startDate = dateFormat.format(calendar.time)
+                binding.fechaInicioInput.setText(startDate)
+            }
+        }
 
-        val monthlyData = mapOf(
-            "Ejercicio" to Pair(12, 3),
-            "Estudio" to Pair(9, 5),
-            "Salud" to Pair(7, 4),
-            "Otro" to Pair(4, 3)
-        )
-
-        setupBarChart(binding.barChartWeek, weeklyData, "Completados esta semana", "No completados esta semana")
-        setupBarChart(binding.barChartMonth, monthlyData, "Completados este mes", "No completados este mes")
+        binding.fechaFinInput.setOnClickListener {
+            showDatePicker { year, month, day ->
+                val calendar = Calendar.getInstance()
+                calendar.set(year, month, day)
+                endDate = dateFormat.format(calendar.time)
+                binding.fechaFinInput.setText(endDate)
+            }
+        }
     }
 
-    private fun setupBarChart(chart: BarChart, data: Map<String, Pair<Int, Int>>, completedLabel: String, uncompletedLabel: String) {
+    private fun showDatePicker(onDateSelected: (year: Int, month: Int, day: Int) -> Unit) {
+        val calendar = Calendar.getInstance()
+
+        DatePickerDialog(
+            requireContext(),
+            { _, year, month, day -> onDateSelected(year, month, day) },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).show()
+    }
+
+    private fun setupCategorySelection() {
+        viewModel.categories.observe(viewLifecycleOwner) { categories ->
+            val categoriesList = mutableListOf<String>()
+            categoriesList.add("") // Empty option for "all categories"
+            categoriesList.addAll(categories)
+
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item, // Use simple_spinner_item for Spinner
+                categoriesList
+            )
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) // Set dropdown style
+
+            binding.spCategoria.adapter = adapter // Use adapter property for Spinner
+            binding.spCategoria.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    selectedCategory = categoriesList[position]
+                    // Puedes agregar aquí alguna lógica adicional si necesitas reaccionar
+                    // inmediatamente a la selección de la categoría.
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    selectedCategory = "" // O algún valor por defecto si es necesario
+                }
+            }
+        }
+
+        viewModel.loadCategories()
+    }
+
+    private fun setupChartObservers() {
+        viewModel.weeklyStats.observe(viewLifecycleOwner) { data ->
+            if (data.isNotEmpty()) {
+                setupBarChart(binding.barChartWeek, data, "Completados", "No completados")
+            } else {
+                // Clear chart if no data
+                binding.barChartWeek.clear()
+                binding.barChartWeek.invalidate()
+            }
+        }
+
+        viewModel.monthlyStats.observe(viewLifecycleOwner) { data ->
+            if (data.isNotEmpty()) {
+                setupBarChart(binding.barChartMonth, data, "Completados", "No completados")
+            } else {
+                // Clear chart if no data
+                binding.barChartMonth.clear()
+                binding.barChartMonth.invalidate()
+            }
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.confirmButton.isEnabled = !isLoading
+            // You could also show a progress indicator here
+        }
+    }
+
+    private fun setupFilterButton() {
+        binding.confirmButton.setOnClickListener {
+            if (startDate.isEmpty() || endDate.isEmpty()) {
+                Toast.makeText(context, "Por favor selecciona fechas válidas", Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            }
+
+            viewModel.loadStatsForDateRange(startDate, endDate, selectedCategory.ifEmpty { null })
+        }
+    }
+
+    private fun setupBarChart(
+        chart: BarChart,
+        data: Map<String, Pair<Int, Int>>,
+        completedLabel: String,
+        uncompletedLabel: String
+    ) {
         val completedEntries = mutableListOf<BarEntry>()
         val uncompletedEntries = mutableListOf<BarEntry>()
+        val categories = data.keys.toList()
 
         data.entries.forEachIndexed { index, entry ->
             completedEntries.add(BarEntry(index.toFloat(), entry.value.first.toFloat()))
@@ -74,9 +193,10 @@ class DashboardFragment : Fragment() {
 
         chart.apply {
             this.data = barData
-            xAxis.valueFormatter = IndexAxisValueFormatter(data.keys.toList())
+            xAxis.valueFormatter = IndexAxisValueFormatter(categories)
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             xAxis.setDrawGridLines(false)
+            xAxis.granularity = 1f
             axisLeft.setDrawGridLines(false)
             axisRight.isEnabled = false
             description.isEnabled = false
@@ -85,7 +205,19 @@ class DashboardFragment : Fragment() {
 
             setScaleEnabled(false)
             barData.barWidth = 0.3f
-            var groupSpace = 0.1f
+
+            // Adjust spacing if there are multiple categories
+            if (categories.size > 1) {
+                val groupSpace = 0.1f
+                val barSpace = 0.05f
+
+                // This ensures that the groups of bars are properly spaced
+                groupBars(0f, groupSpace, barSpace)
+
+                // Ensure the X axis fits all categories
+                xAxis.axisMinimum = -0.5f
+                xAxis.axisMaximum = categories.size - 0.5f
+            }
 
             invalidate()
         }
