@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
 
         homeViewModel.habitsLiveData.observe(viewLifecycleOwner, Observer { habits ->
             Log.d("HomeFragment", "Fetched ${habits.size} habits")
-            habitAdapter = HabitAdapter(requireContext(), habits as ArrayList<Habito?>?)
+            habitAdapter = HabitAdapter(requireContext(), habits as ArrayList<Habito?>?, true)
             recyclerView.adapter = habitAdapter
         })
 

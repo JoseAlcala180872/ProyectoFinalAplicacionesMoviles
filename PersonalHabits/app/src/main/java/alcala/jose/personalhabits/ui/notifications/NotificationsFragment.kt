@@ -48,8 +48,9 @@ class NotificationsFragment : Fragment() {
         recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
 
+
         notificationsViewModel.habitsLiveData.observe(viewLifecycleOwner) { habits ->
-            habitAdapter = HabitAdapter(requireContext(), habits as ArrayList<Habito?>?)
+            habitAdapter = HabitAdapter(requireContext(), habits as ArrayList<Habito?>?, false)
             recyclerView.adapter = habitAdapter
         }
 
