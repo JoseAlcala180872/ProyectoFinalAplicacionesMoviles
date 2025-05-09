@@ -116,10 +116,7 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:background="@color/lessPurple"
-                android:inputType="text"
                 android:textAlignment="center"
-                android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -129,13 +126,13 @@
     <!-- Confirm Button -->
     <Button
         android:backgroundTint="@color/mediumPurple"
+        android:textColor="@color/white"
         android:id="@+id/confirmButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:text="Filtrar"
-        android:textColor="@color/white"
         android:alpha="1"
         android:textColorLink="#BEBEBE"
         app:rippleColor="#FCF5FD" />
@@ -158,17 +155,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Semanal"
+                android:text="Semanal/Personalizado"
                 android:textSize="16sp"
                 android:gravity="center"/>
 
-                       <com.github.mikephil.charting.charts.BarChart
-                           android:id="@+id/barChartWeek"
-                           android:layout_width="match_parent"
-                           android:layout_height="200dp"
-                           android:layout_marginTop="0dp"
-                           tools:ignore="MissingClass" />
-            <!--Graph 2: BarChart -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/WeeklychartysRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="0dp"
+                android:padding="0dp"
+                android:nestedScrollingEnabled="false" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -176,12 +174,31 @@
                 android:text="Mensual"
                 android:textSize="16sp"
                 android:gravity="center"/>
-                        <com.github.mikephil.charting.charts.BarChart
-                            android:id="@+id/barChartMonth"
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp"
-                            android:layout_marginTop="5dp"
-                            tools:ignore="MissingClass" />
+
+            <Spinner
+                android:alpha="0.40"
+                android:id="@+id/monthSpinner"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@color/lessPurple"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:layout_marginBottom="10dp"
+                android:textSize="14sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/chartysRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="0dp"
+                android:padding="0dp"
+                android:nestedScrollingEnabled="false" />
+
+
         </LinearLayout>
 
     </ScrollView>

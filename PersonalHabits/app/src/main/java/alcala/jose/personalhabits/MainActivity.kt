@@ -1,6 +1,6 @@
 package alcala.jose.personalhabits
 
-import alcala.jose.personalhabits.repositories.AuthRepository
+import alcala.jose.personalhabits.Repositories.AuthRepository
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Intent
@@ -14,7 +14,6 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseUser

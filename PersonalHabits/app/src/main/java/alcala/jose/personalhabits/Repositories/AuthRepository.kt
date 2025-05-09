@@ -1,4 +1,4 @@
-package alcala.jose.personalhabits.repositories
+package alcala.jose.personalhabits.Repositories
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth

@@ -1,9 +1,9 @@
 package alcala.jose.personalhabits
 
 import alcala.jose.personalhabits.Dominio.Habito
-import alcala.jose.personalhabits.repositories.CategoryRepository
-import alcala.jose.personalhabits.repositories.HabitRepository
-import alcala.jose.personalhabits.repositories.UserRepository
+import alcala.jose.personalhabits.Repositories.CategoryRepository
+import alcala.jose.personalhabits.Repositories.HabitRepository
+import alcala.jose.personalhabits.Repositories.UserRepository
 import android.app.TimePickerDialog
 import android.graphics.Color
 import android.icu.util.Calendar
@@ -19,16 +19,20 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-private lateinit var userRepository: UserRepository
-private lateinit var categoryRepository: CategoryRepository
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class EditHabito : AppCompatActivity() {
 
-    private lateinit var userRepository: UserRepository
-    private lateinit var categoryRepository: CategoryRepository
+    // Use the viewModels property delegate to ensure proper lifecycle management
+    private val userRepository: UserRepository by lazy { UserRepository() }
+    private val categoryRepository: CategoryRepository by lazy { CategoryRepository() }
+    private val habitRepository: HabitRepository by lazy { HabitRepository() }
+
     private lateinit var colorPreviewEdit: View
     private var selectedColor: Int = Color.GRAY
 
@@ -42,9 +46,6 @@ class EditHabito : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        userRepository = UserRepository()
-        categoryRepository = CategoryRepository()
 
         // Get data from intent
         val bundle = intent.extras
@@ -61,10 +62,8 @@ class EditHabito : AppCompatActivity() {
         val ibHoraEdit: ImageButton = findViewById(R.id.ibHoraEdit)
         val btnColorPickerEdit: ImageButton = findViewById(R.id.btnColorPickerEdit)
         colorPreviewEdit = findViewById(R.id.colorPreviewEdit)
-        var btnCancelar: Button
-        var btnAceptar: Button
-        btnAceptar = findViewById(R.id.btnAceptarEdit)
-        btnCancelar = findViewById(R.id.btnCancelarEdit)
+        var btnCancelar: Button = findViewById(R.id.btnCancelarEdit)
+        var btnAceptar: Button = findViewById(R.id.btnAceptarEdit)
 
         ibHoraEdit.setOnClickListener {
             showTimePickerDialog()
@@ -106,64 +105,24 @@ class EditHabito : AppCompatActivity() {
         cbSabadoEdit.isChecked = frecuenciaList.contains("S")
         cbDomingoEdit.isChecked = frecuenciaList.contains("D")
 
+        // Using repository to fetch categories
+        val allCategories = categoryRepository.getCategories()
 
-
-        userRepository.getCategories { userCategories ->
-            val allCategories = mutableSetOf<String>()
-            allCategories.addAll(userCategories)
-            allCategories.addAll(categoryRepository.getCategories())
-
-            val adapter = ArrayAdapter(
-                this,
-                android.R.layout.simple_spinner_dropdown_item,
-                allCategories.toList()
-            )
-            val categoriaSpinner: Spinner = findViewById(R.id.spCategoriaEdit)
-            categoriaSpinner.adapter = adapter
-
-            val categoriaValue = intent.getStringExtra("habitCategory") ?: ""
-            val categoriaIndex = (0 until categoriaSpinner.count).firstOrNull {
-                categoriaSpinner.getItemAtPosition(it).toString() == categoriaValue
-            } ?: 0
-
-            categoriaSpinner.setSelection(categoriaIndex)
-        }
-
-    }
-
-
-
-    private fun showTimePickerDialog() {
-        val calendar = Calendar.getInstance()
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-        val minute = calendar.get(Calendar.MINUTE)
-
-        val timePickerDialog = TimePickerDialog(
+        val adapter = ArrayAdapter(
             this,
-            R.style.TimePickerTheme,
-            { _, selectedHour, selectedMinute ->
-                val horaSeleccionada: TextView = findViewById(R.id.tvHoraSeleccionadaEdit)
-                horaSeleccionada.text = String.format("%02d:%02d", selectedHour, selectedMinute)
-            },
-            hour,
-            minute,
-            true
+            android.R.layout.simple_spinner_dropdown_item,
+            allCategories
         )
+        val categoriaSpinner: Spinner = findViewById(R.id.spCategoriaEdit)
+        categoriaSpinner.adapter = adapter
 
-        timePickerDialog.show()
-    }
+        val categoriaValue = intent.getStringExtra("habitCategory") ?: ""
+        val categoriaIndex = (0 until categoriaSpinner.count).firstOrNull {
+            categoriaSpinner.getItemAtPosition(it).toString() == categoriaValue
+        } ?: 0
 
-    private fun obtenerDiasSeleccionados(): List<String> {
-        val llFrecuencia: LinearLayout = findViewById(R.id.llFrecuenciaEdit)
-        val diasSeleccionados = mutableListOf<String>()
-        for (i in 0 until llFrecuencia.childCount) {
-            val checkBox = llFrecuencia.getChildAt(i) as? CheckBox
-            if (checkBox?.isChecked == true) {
-                diasSeleccionados.add(checkBox.text.toString())
-            }
-        }
+        categoriaSpinner.setSelection(categoriaIndex)
 
-        return diasSeleccionados
     }
 
     private fun updateHabito() {
@@ -204,8 +163,15 @@ class EditHabito : AppCompatActivity() {
             userId = userId
         )
 
-        val habitRepository = HabitRepository()
-        habitRepository.updateHabit(updatedHabit) { success ->
+        // Inside your Activity or Fragment
+        lifecycleScope.launch {
+            val success = try {
+                habitRepository.updateHabit(updatedHabit)
+            } catch (e: Exception) {
+                Log.e("EditHabito", "Failed to update habit", e)
+                false
+            }
+
             if (success) {
                 Log.d("EditHabito", "Habit updated successfully")
                 finish()
@@ -213,6 +179,38 @@ class EditHabito : AppCompatActivity() {
                 Log.e("EditHabito", "Failed to update habit")
             }
         }
+    }
+
+    private fun showTimePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        val timePickerDialog = TimePickerDialog(
+            this,
+            R.style.TimePickerTheme,
+            { _, selectedHour, selectedMinute ->
+                val horaSeleccionada: TextView = findViewById(R.id.tvHoraSeleccionadaEdit)
+                horaSeleccionada.text = String.format("%02d:%02d", selectedHour, selectedMinute)
+            },
+            hour,
+            minute,
+            true
+        )
+
+        timePickerDialog.show()
+    }
+
+    private fun obtenerDiasSeleccionados(): List<String> {
+        val llFrecuencia: LinearLayout = findViewById(R.id.llFrecuenciaEdit)
+        val diasSeleccionados = mutableListOf<String>()
+        for (i in 0 until llFrecuencia.childCount) {
+            val checkBox = llFrecuencia.getChildAt(i) as? CheckBox
+            if (checkBox?.isChecked == true) {
+                diasSeleccionados.add(checkBox.text.toString())
+            }
+        }
+        return diasSeleccionados
     }
 
 

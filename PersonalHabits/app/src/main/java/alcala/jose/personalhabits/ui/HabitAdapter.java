@@ -1,5 +1,4 @@
 package alcala.jose.personalhabits.ui;
-import static androidx.core.content.ContextCompat.startActivity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,14 +16,12 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 import alcala.jose.personalhabits.Dominio.Habito;
 import alcala.jose.personalhabits.EditHabito;
 import alcala.jose.personalhabits.R;
-import alcala.jose.personalhabits.repositories.HabitRepository;
-import alcala.jose.personalhabits.repositories.UserRepository;
+import alcala.jose.personalhabits.Repositories.HabitRepository;
+import alcala.jose.personalhabits.Repositories.UserRepository;
 
 public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder> {
 
@@ -35,11 +32,10 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
     UserRepository userRepository = new UserRepository();
     HabitRepository habitRepository = new HabitRepository();
 
-    // Updated constructor to accept the flag
     public HabitAdapter(Context context, ArrayList<Habito> habitList, boolean showCompleteButton) {
         this.context = context;
         this.habitList = habitList;
-        this.showCompleteButton = showCompleteButton;  // Initialize the flag
+        this.showCompleteButton = showCompleteButton;
     }
 
     @NonNull
@@ -71,15 +67,16 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
             holder.completeButton.setVisibility(View.VISIBLE);  // Show the button
 
             holder.completeButton.setOnClickListener(v -> {
-                userRepository.updateCompletionStatus(habit.getId(), true, success -> {
+                habitRepository.updateCompletionStatus(habit.getId(), true, success -> {
                     if (success) {
-                        // Do something on success
+                        // Do something on success (e.g., update UI or notify user)
                     } else {
-                        // Handle failure
+                        // Handle failure (e.g., show error message)
                     }
                     return null;
                 });
             });
+
         }
 
         holder.optionsButton.setOnClickListener(v -> {

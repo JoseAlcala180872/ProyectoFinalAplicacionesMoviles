@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="alcala.jose.personalhabits.ui.dashboard.DashboardFragment"
+        android:name="alcala.jose.personalhabits.ui.charts.ChartsFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="alcala.jose.personalhabits.ui.notifications.NotificationsFragment"
+        android:name="alcala.jose.personalhabits.ui.habits.HabitsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
 </navigation>

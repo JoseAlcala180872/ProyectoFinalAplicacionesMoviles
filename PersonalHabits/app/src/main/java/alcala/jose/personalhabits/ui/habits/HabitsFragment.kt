@@ -1,6 +1,5 @@
-package alcala.jose.personalhabits.ui.notifications
+package alcala.jose.personalhabits.ui.habits
 
-import alcala.jose.personalhabits.AddHabito
 import alcala.jose.personalhabits.Dominio.Habito
 import alcala.jose.personalhabits.R
 import android.os.Bundle
@@ -12,23 +11,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import alcala.jose.personalhabits.databinding.FragmentNotificationsBinding
 import alcala.jose.personalhabits.ui.HabitAdapter
-import alcala.jose.personalhabits.ui.home.HomeViewModel
-import android.content.Intent
-import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.ProgressBar
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.util.ArrayList
 
-class NotificationsFragment : Fragment() {
+class HabitsFragment : Fragment() {
 
     private var _binding: FragmentNotificationsBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var notificationsViewModel: NotificationsViewModel
+    private lateinit var notificationsViewModel: HabitsViewModel
     private lateinit var habitAdapter: HabitAdapter
     private lateinit var recyclerView: RecyclerView
 
@@ -43,7 +36,7 @@ class NotificationsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        notificationsViewModel = ViewModelProvider(this).get(NotificationsViewModel::class.java)
+        notificationsViewModel = ViewModelProvider(this).get(HabitsViewModel::class.java)
 
         recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -54,6 +47,7 @@ class NotificationsFragment : Fragment() {
             recyclerView.adapter = habitAdapter
         }
 
+
         notificationsViewModel.fetchHabits()
 
         val imageView = view.findViewById<ImageView>(R.id.streakStatusImage)
@@ -61,9 +55,9 @@ class NotificationsFragment : Fragment() {
 
         fun updateProgress(streak: Int) {
             when {
-                streak > 10 -> imageView.setImageResource(R.drawable.happyface)
-                streak > 5 -> imageView.setImageResource(R.drawable.calmface)
-                else -> imageView.setImageResource(R.drawable.sad_face_svgrepo_com)
+                streak > 10 -> imageView.setImageResource(R.drawable.sentiment_very_satisfied)
+                streak > 5 -> imageView.setImageResource(R.drawable.sentiment_neutral)
+                else -> imageView.setImageResource(R.drawable.sentiment_very_dissatisfied)
             }
             textView.text = "Puntos: $streak"
         }

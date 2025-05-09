@@ -1,4 +1,4 @@
-package alcala.jose.personalhabits.notifications
+package alcala.jose.personalhabits.Notifications
 
 import alcala.jose.personalhabits.R
 import android.annotation.SuppressLint

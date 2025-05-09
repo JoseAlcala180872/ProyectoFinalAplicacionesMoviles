@@ -1,4 +1,4 @@
-package alcala.jose.personalhabits.repositories
+package alcala.jose.personalhabits.Repositories
 
 class CategoryRepository {
 

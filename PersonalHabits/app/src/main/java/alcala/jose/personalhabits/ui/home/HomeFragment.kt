@@ -1,5 +1,6 @@
 package alcala.jose.personalhabits.ui.home
 
+import HomeViewModel
 import alcala.jose.personalhabits.AddHabito
 import alcala.jose.personalhabits.Dominio.Habito
 import alcala.jose.personalhabits.R

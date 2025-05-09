@@ -3,5 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="titleSize">32sp</dimen>
+    <dimen name ='graphWith'>15dp</dimen>
+    <dimen name ='graphBackground'>15dp</dimen>
 
 </resources>

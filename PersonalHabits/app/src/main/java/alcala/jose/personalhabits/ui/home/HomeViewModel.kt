@@ -1,40 +1,46 @@
-package alcala.jose.personalhabits.ui.home
-
 import alcala.jose.personalhabits.Dominio.Habito
-import alcala.jose.personalhabits.repositories.HabitRepository
-import alcala.jose.personalhabits.repositories.UserRepository
+import alcala.jose.personalhabits.Repositories.HabitRepository
+import alcala.jose.personalhabits.Repositories.UserRepository
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.database.FirebaseDatabase
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
 
     private val userRepository = UserRepository()
     private val habitRepository = HabitRepository()
+
     val habitsLiveData: MutableLiveData<List<Habito>> = MutableLiveData()
     val totalHabitsOfTheDayLiveData = MutableLiveData<Int>()
     val totalDoneHabitsOfTheDayLiveData = MutableLiveData<Int>()
+
+    // Fetch pending habits for the day
     fun fetchHabits() {
-        habitRepository.getPendingHabitsForToday { habits ->
+        viewModelScope.launch {
+            val habits = habitRepository.getPendingHabitsForToday()
             habitsLiveData.value = habits
         }
     }
 
+
+
+    // Get the total number of habits scheduled for today
     fun getAmountHabitsOfTheDay() {
-        habitRepository.getTotalHabitsScheduledForToday { count ->
+        viewModelScope.launch {
+            val count = habitRepository.getTotalHabitsScheduledForToday()
             Log.d("HomeViewModel", "Total habits callback received: $count")
-            totalHabitsOfTheDayLiveData.value = count // Use the actual count from the repository
+            totalHabitsOfTheDayLiveData.value = count
         }
     }
 
+    // Get the total number of done habits for today
     fun getDoneAmountHabitsOfTheDay() {
-        habitRepository.getAmountDoneHabitsForToday { count ->
+        viewModelScope.launch {
+            val count = habitRepository.getAmountDoneHabitsForToday()
             Log.d("HomeViewModel", "Total done habits callback received: $count")
-            totalDoneHabitsOfTheDayLiveData.value = count // Use the actual count from the repository
+            totalDoneHabitsOfTheDayLiveData.value = count
         }
     }
-
-
-
 }

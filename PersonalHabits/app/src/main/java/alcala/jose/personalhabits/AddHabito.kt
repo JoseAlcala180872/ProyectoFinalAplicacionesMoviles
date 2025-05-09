@@ -1,9 +1,9 @@
 package alcala.jose.personalhabits
 
 import alcala.jose.personalhabits.Dominio.Habito
-import alcala.jose.personalhabits.repositories.CategoryRepository
-import alcala.jose.personalhabits.repositories.HabitRepository
-import alcala.jose.personalhabits.repositories.UserRepository
+import alcala.jose.personalhabits.Repositories.CategoryRepository
+import alcala.jose.personalhabits.Repositories.HabitRepository
+import alcala.jose.personalhabits.Repositories.UserRepository
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.graphics.Color
@@ -11,7 +11,6 @@ import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -24,7 +23,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class AddHabito : AppCompatActivity() {
 
@@ -91,18 +92,18 @@ class AddHabito : AppCompatActivity() {
             selectedColor = Color.parseColor(colorString)
             colorPreview.setBackgroundColor(selectedColor)
         }
-
     }
 
     private fun setupCategoryDropdown() {
-        // Get user categories and add default categories if not present
-        userRepository.getCategories { userCategories ->
+        GlobalScope.launch(Dispatchers.Main) {
+            // Get user categories and add default categories if not present
+            val userCategories = userRepository.getCategories()
             val allCategories = mutableSetOf<String>()
             allCategories.addAll(userCategories)
             allCategories.addAll(categoryRepository.getCategories())
 
             val adapter = ArrayAdapter(
-                this,
+                this@AddHabito,
                 android.R.layout.simple_spinner_dropdown_item,
                 allCategories.toList()
             )
@@ -148,24 +149,20 @@ class AddHabito : AppCompatActivity() {
             frecuencia = diasSeleccionados,
             color = selectedColor,
             categoria = categoria,
-            userId = userRepository.userId.toString()
+            userId = userRepository.get_uid()
         )
 
-        habitRepository.addHabit(nuevoHabito) { success ->
+        GlobalScope.launch(Dispatchers.Main) {
+            val success = habitRepository.addHabit(nuevoHabito)
             if (success) {
                 Log.d("AddHabito", "Hábito guardado exitosamente")
-                val intent = Intent(this, MenuFragment::class.java)
+                val intent = Intent(this@AddHabito, MenuFragment::class.java)
                 startActivity(intent)
                 finish()
             } else {
                 Log.e("AddHabito", "Error al guardar el hábito")
             }
-        }
 
-        userRepository.getCategories { userCategories ->
-            if (!userCategories.contains(categoria)) {
-                userRepository.addCategory(categoria) {}
-            }
         }
     }
 
