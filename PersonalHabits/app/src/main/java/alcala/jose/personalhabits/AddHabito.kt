@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.CheckBox
@@ -35,6 +36,7 @@ class AddHabito : AppCompatActivity() {
     private lateinit var btnAceptar: Button
     private lateinit var btnCancelar: Button
     private lateinit var btnColor: ImageButton
+    private lateinit var colorPreview: View
     private lateinit var spCategoria: Spinner
     private var selectedColor: Int = Color.GRAY
     private lateinit var habitRepository: HabitRepository
@@ -60,6 +62,7 @@ class AddHabito : AppCompatActivity() {
         btnAceptar = findViewById(R.id.btnAceptar)
         btnCancelar = findViewById(R.id.btnCancelar)
         btnColor = findViewById(R.id.btnColorPicker)
+        colorPreview = findViewById(R.id.colorPreview)
         habitRepository = HabitRepository()
         userRepository = UserRepository()
         categoryRepository = CategoryRepository()
@@ -86,7 +89,7 @@ class AddHabito : AppCompatActivity() {
         supportFragmentManager.setFragmentResultListener("color_picked", this) { _, bundle ->
             val colorString = bundle.getString("color", "#777777")
             selectedColor = Color.parseColor(colorString)
-            btnColor.setBackgroundColor(selectedColor)
+            colorPreview.setBackgroundColor(selectedColor)
         }
 
     }
@@ -114,6 +117,7 @@ class AddHabito : AppCompatActivity() {
 
         val timePickerDialog = TimePickerDialog(
             this,
+            R.style.TimePickerTheme,
             { _, selectedHour, selectedMinute ->
                 tvHoraSeleccionada.text = String.format("%02d:%02d", selectedHour, selectedMinute)
             },

@@ -14,6 +14,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.ArrayAdapter
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -25,6 +26,11 @@ private lateinit var userRepository: UserRepository
 private lateinit var categoryRepository: CategoryRepository
 
 class EditHabito : AppCompatActivity() {
+
+    private lateinit var userRepository: UserRepository
+    private lateinit var categoryRepository: CategoryRepository
+    private lateinit var colorPreviewEdit: View
+    private var selectedColor: Int = Color.GRAY
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +60,7 @@ class EditHabito : AppCompatActivity() {
         val hora: TextView = findViewById(R.id.tvHoraSeleccionadaEdit)
         val ibHoraEdit: ImageButton = findViewById(R.id.ibHoraEdit)
         val btnColorPickerEdit: ImageButton = findViewById(R.id.btnColorPickerEdit)
+        colorPreviewEdit = findViewById(R.id.colorPreviewEdit)
         var btnCancelar: Button
         var btnAceptar: Button
         btnAceptar = findViewById(R.id.btnAceptarEdit)
@@ -78,15 +85,15 @@ class EditHabito : AppCompatActivity() {
 
         supportFragmentManager.setFragmentResultListener("color_picked", this) { _, bundle ->
             val colorString = bundle.getString("color", "#777777")
-            val selectedColor = Color.parseColor(colorString)
-            btnColorPickerEdit.setBackgroundColor(selectedColor)
+            selectedColor = Color.parseColor(colorString)
+            colorPreviewEdit.setBackgroundColor(selectedColor)
         }
 
         nombre.setText(bundle!!.getString("habitName"))
         descripcion.setText(bundle!!.getString("habitDescription"))
         val colorInt = bundle!!.getInt("habitColor")
-
-        btnColorPickerEdit.setBackgroundColor(colorInt)
+        selectedColor = colorInt
+        colorPreviewEdit.setBackgroundColor(colorInt)
 
         hora.setText(bundle!!.getString("habitTime"))
 
@@ -133,6 +140,7 @@ class EditHabito : AppCompatActivity() {
 
         val timePickerDialog = TimePickerDialog(
             this,
+            R.style.TimePickerTheme,
             { _, selectedHour, selectedMinute ->
                 val horaSeleccionada: TextView = findViewById(R.id.tvHoraSeleccionadaEdit)
                 horaSeleccionada.text = String.format("%02d:%02d", selectedHour, selectedMinute)
@@ -163,14 +171,12 @@ class EditHabito : AppCompatActivity() {
         val descripcion: EditText = findViewById(R.id.etDescripcionEdit)
         val hora: TextView = findViewById(R.id.tvHoraSeleccionadaEdit)
         val categoriaSpinner: Spinner = findViewById(R.id.spCategoriaEdit)
-        val btnColorPickerEdit: ImageButton = findViewById(R.id.btnColorPickerEdit)
 
         val habitName = nombre.text.toString().trim()
         val habitDescription = descripcion.text.toString().trim()
         val habitTime = hora.text.toString().trim()
         val habitCategory = categoriaSpinner.selectedItem.toString()
         val habitFrequency = obtenerDiasSeleccionados()
-        val habitColor = (btnColorPickerEdit.background as? android.graphics.drawable.ColorDrawable)?.color ?: Color.GRAY
 
         // Validation
         if (habitName.isEmpty() || habitTime.isEmpty()) {
@@ -194,7 +200,7 @@ class EditHabito : AppCompatActivity() {
             hora = habitTime,
             categoria = habitCategory,
             frecuencia = habitFrequency,
-            color = habitColor,
+            color = selectedColor,
             userId = userId
         )
 

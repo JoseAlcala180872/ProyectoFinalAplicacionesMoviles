@@ -1,23 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".EditHabito"
-    android:layout_margin="20dp"
+    android:layout_margin="16dp">
 
-    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/llBotonesEdit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
     <TextView
         android:id="@+id/textViewEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Editar\nhábito"
-        android:textAlignment="center"
+        android:textColor="@color/veryPurple"
         android:textSize="@dimen/titleSize"
-        android:layout_gravity="center" />
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
     <TextView
         android:id="@+id/tvNombreEdit"
         android:layout_width="wrap_content"
@@ -25,140 +42,181 @@
         android:text="Nombre"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:textColor="@color/veryPurple"
         app:layout_constraintTop_toBottomOf="@id/textViewEdit"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="24dp"/>
 
     <EditText
         android:id="@+id/etNombreEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/lessPurple"
-        android:padding="10dp"
+        android:inputType="text"
+        android:padding="12dp"
+        android:textColor="@color/veryPurple"
         app:layout_constraintTop_toBottomOf="@id/tvNombreEdit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="8dp"/>
 
     <TextView
         android:id="@+id/tvDescripcionEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Descripción"
+        android:textColor="@color/veryPurple"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/etNombreEdit"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="12dp"/>
+        app:layout_constraintTop_toBottomOf="@id/etNombreEdit" />
 
 
     <EditText
         android:id="@+id/etDescripcionEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:background="@color/lessPurple"
-        android:padding="10dp"
-        app:layout_constraintTop_toBottomOf="@id/tvDescripcionEdit"
-        app:layout_constraintStart_toStartOf="parent"
+        android:inputType="textMultiLine"
+        android:padding="12dp"
+        android:textColor="@color/veryPurple"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDescripcionEdit" />
 
     <TextView
         android:id="@+id/tvCategoriaEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Categoría"
+        android:textColor="@color/veryPurple"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/etDescripcionEdit"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="12dp"/>
+        app:layout_constraintTop_toBottomOf="@id/etDescripcionEdit" />
 
     <Spinner
         android:id="@+id/spCategoriaEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:background="@color/lessPurple"
-        android:padding="10dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintTop_toBottomOf="@id/tvCategoriaEdit"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:padding="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCategoriaEdit" />
 
     <TextView
         android:id="@+id/tvColorEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Color"
+        android:textColor="@color/veryPurple"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/spCategoriaEdit"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="12dp"/>
+        app:layout_constraintTop_toBottomOf="@id/spCategoriaEdit" />
 
-        <ImageButton
-            android:id="@+id/btnColorPickerEdit"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_palette"
-            android:background="?attr/selectableItemBackground"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnColorPickerEdit"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="?attr/selectableItemBackground"
+                android:src="@drawable/ic_palette" />
+
+            <View
+                android:id="@+id/colorPreviewEdit"
+                android:layout_width="48dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:background="@color/white" />
+        </LinearLayout>
 
     <TextView
         android:id="@+id/tvFrecuenciaEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Frecuencia semanal"
+        android:textColor="@color/veryPurple"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:layout_marginTop="12dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnColorPickerEdit" />
 
     <LinearLayout
         android:id="@+id/llFrecuenciaEdit"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal"
-        android:layout_marginTop="4dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvFrecuenciaEdit">
 
         <CheckBox
             android:id="@+id/cbLunesEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="L" />
+            android:layout_marginEnd="8dp"
+            android:text="L"
+            android:textColor="@color/veryPurple" />
 
         <CheckBox
             android:id="@+id/cbMartesEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="M" />
+            android:layout_marginEnd="8dp"
+            android:text="M"
+            android:textColor="@color/veryPurple" />
 
         <CheckBox
             android:id="@+id/cbMiercolesEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="X" />
+            android:layout_marginEnd="8dp"
+            android:text="X"
+            android:textColor="@color/veryPurple" />
 
         <CheckBox
             android:id="@+id/cbJuevesEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="J" />
+            android:layout_marginEnd="8dp"
+            android:text="J"
+            android:textColor="@color/veryPurple" />
 
         <CheckBox
             android:id="@+id/cbViernesEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="V" />
+            android:layout_marginEnd="8dp"
+            android:text="V"
+            android:textColor="@color/veryPurple" />
 
         <CheckBox
             android:id="@+id/cbSabadoEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="S" />
+            android:layout_marginEnd="8dp"
+            android:text="S"
+            android:textColor="@color/veryPurple" />
 
         <CheckBox
             android:id="@+id/cbDomingoEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="D" />
+            android:text="D"
+            android:textColor="@color/veryPurple" />
     </LinearLayout>
 
 
@@ -166,74 +224,76 @@
         android:id="@+id/tvHoraEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Hora de recordatorio"
+        android:textColor="@color/veryPurple"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/llFrecuenciaEdit"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="12dp"/>
+        app:layout_constraintTop_toBottomOf="@id/llFrecuenciaEdit" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/llHoraEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
         android:background="@color/lessPurple"
         android:padding="10dp"
-        app:layout_constraintTop_toBottomOf="@id/tvHoraEdit"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="4dp">
+        app:layout_constraintTop_toBottomOf="@id/tvHoraEdit">
 
         <TextView
             android:id="@+id/tvHoraSeleccionadaEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="Seleccionar hora"
-            android:layout_marginTop="2dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/veryPurple"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/ibHoraEdit"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="2dp"
             android:layout_width="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_height="24dp"
-
-            android:src="@drawable/ic_calendar"/>
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_clock"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+    </ScrollView>
 
 
     <LinearLayout
         android:id="@+id/llBotonesEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="80dp"
-        android:layout_marginBottom="16dp">
+        app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/btnCancelarEdit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Cancelar"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:backgroundTint="@color/mediumPurple"
-            android:textColor="@android:color/white"/>
+            android:text="Cancelar"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/btnAceptarEdit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Aceptar"
+            android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:backgroundTint="@color/veryPurple"
-            android:textColor="@android:color/white"/>
+            android:text="Aceptar"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

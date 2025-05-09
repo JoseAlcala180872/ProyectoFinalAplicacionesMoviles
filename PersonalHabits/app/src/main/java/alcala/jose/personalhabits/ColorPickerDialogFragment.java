@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,17 +28,18 @@ public class ColorPickerDialogFragment extends DialogFragment {
     private ColorAdapter colorAdapter;
     private String selectedColor = "#FFFFFF";  // Default white
     private View dialogView;  // Store inflated view
+    private View colorPreviewDialog;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_color_picker, null);
-
+        colorPreviewDialog = dialogView.findViewById(R.id.colorPreviewDialog);
         colorRecyclerView = dialogView.findViewById(R.id.colorRecyclerView);
         Button confirmButton = dialogView.findViewById(R.id.confirmButton);
 
         // Set up RecyclerView
-        colorRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        colorRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 5));
         colorAdapter = new ColorAdapter(new ColorRepository().getColors(), color -> {
             selectedColor = color;
             updateColorPreview();
@@ -52,6 +54,8 @@ public class ColorPickerDialogFragment extends DialogFragment {
             dismiss();
         });
 
+        updateColorPreview();
+
         return new android.app.AlertDialog.Builder(requireContext())
                 .setView(dialogView)
                 .setTitle("Escoger Color")
@@ -59,21 +63,18 @@ public class ColorPickerDialogFragment extends DialogFragment {
     }
 
     private void updateColorPreview() {
-        if (dialogView != null) {
-            View colorPreview = dialogView.findViewById(R.id.colorPreviewDialog);
-            if (colorPreview != null) {
-                colorPreview.setBackgroundColor(Color.parseColor(selectedColor));
-            }
+        if (colorPreviewDialog != null) {
+            colorPreviewDialog.setBackgroundColor(Color.parseColor(selectedColor));
         }
     }
 
     // Adapter for RecyclerView
     private static class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHolder> {
 
-        private final List<Pair<String, String>> colors;
+        private final List<kotlin.Pair<String, String>> colors;
         private final OnColorSelectedListener listener;
 
-        ColorAdapter(@NotNull List<@NotNull Pair<@NotNull String, @NotNull String>> colors, OnColorSelectedListener listener) {
+        ColorAdapter(@NotNull List<kotlin.Pair<@NotNull String, @NotNull String>> colors, OnColorSelectedListener listener) {
             this.colors = colors;
             this.listener = listener;
         }
@@ -87,10 +88,8 @@ public class ColorPickerDialogFragment extends DialogFragment {
 
         @Override
         public void onBindViewHolder(@NonNull ColorViewHolder holder, int position) {
-            Pair<String, String> color = colors.get(position);
-            holder.colorName.setText(color.getFirst());
+            kotlin.Pair<String, String> color = colors.get(position);
             holder.colorPreview.setBackgroundColor(Color.parseColor(color.getSecond()));
-
             holder.itemView.setOnClickListener(v -> listener.onColorSelected(color.getSecond()));
         }
 
@@ -100,12 +99,10 @@ public class ColorPickerDialogFragment extends DialogFragment {
         }
 
         static class ColorViewHolder extends RecyclerView.ViewHolder {
-            TextView colorName;
             View colorPreview;
 
             ColorViewHolder(View itemView) {
                 super(itemView);
-                colorName = itemView.findViewById(R.id.colorName);
                 colorPreview = itemView.findViewById(R.id.colorPreview);
             }
         }
