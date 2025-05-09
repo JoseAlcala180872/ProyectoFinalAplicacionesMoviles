@@ -11,6 +11,12 @@
     <style name="TimePickerTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/veryPurple</item>
         <item name="android:headerBackground">@color/lessPurple</item>
-        <item name="android:textColorPrimary">@color/darkPurple</item>
+        <item name="android:textColorPrimary">@color/mediumPurple</item>
+    </style>
+
+    <style name="DatePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/veryPurple</item>
+        <item name="android:headerBackground">@color/lessPurple</item>
+        <item name="android:textColorPrimary">@color/mediumPurple</item>
     </style>
 </resources>

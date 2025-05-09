@@ -120,6 +120,7 @@ class ChartsFragment : Fragment() {
         val calendar = Calendar.getInstance()
         DatePickerDialog(
             requireContext(),
+            R.style.DatePickerDialogTheme,
             { _, year, month, day -> onDateSelected(year, month, day) },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
@@ -130,7 +131,7 @@ class ChartsFragment : Fragment() {
 
     private fun setupCategorySelection() {
         viewModel.categories.observe(viewLifecycleOwner) { categories ->
-            val categoriesList = mutableListOf("").apply { addAll(categories) }
+            val categoriesList = mutableListOf("Todas").apply { addAll(categories) }
 
             val adapter = ArrayAdapter(
                 requireContext(),
