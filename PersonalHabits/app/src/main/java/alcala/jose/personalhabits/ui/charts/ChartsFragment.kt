@@ -58,12 +58,12 @@ class ChartsFragment : Fragment() {
 
         // Monthly recyclerView
         binding.chartysRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        chartAdapter = ChartAdapter(requireContext(), ArrayList(), "")
+        chartAdapter = ChartAdapter(requireContext(), ArrayList(), "Todas")
         binding.chartysRecyclerView.adapter = chartAdapter
 
         // Weekly recyclerView
         binding.WeeklychartysRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        weeklyChartAdapter = ChartAdapter(requireContext(), ArrayList(), "")
+        weeklyChartAdapter = ChartAdapter(requireContext(), ArrayList(), "Todas")
         binding.WeeklychartysRecyclerView.adapter = weeklyChartAdapter
 
         // Set default dates and show them
@@ -72,6 +72,8 @@ class ChartsFragment : Fragment() {
         endDate = defaultDates.second
 
         viewModel.loadWeeklyStats(startDate, endDate, selectedCategory,requireContext())
+
+
 
         // Month spinner
         val monthSpinner: Spinner = root.findViewById(R.id.monthSpinner)
@@ -157,14 +159,26 @@ class ChartsFragment : Fragment() {
     }
 
     private fun setupChartObservers() {
+
+        viewModel.isLoadingWeek.observe(viewLifecycleOwner) { isLoading ->
+            binding.weekProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            binding.WeeklychartysRecyclerView.visibility = if (isLoading) View.GONE else View.VISIBLE
+        }
+        viewModel.isLoadingMonth.observe(viewLifecycleOwner) { isLoading ->
+            binding.monthProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            binding.chartysRecyclerView.visibility = if (isLoading) View.GONE else View.VISIBLE
+        }
+
         viewModel.weeklyStats.observe(viewLifecycleOwner) { data ->
             if (data.isNotEmpty()) {
                 weeklyChartAdapter.updateData(data as ArrayList<ChartDTO?>?)
+                binding.WeeklychartysRecyclerView.visibility = View.VISIBLE
             }
         }
         viewModel.monthlyStats.observe(viewLifecycleOwner) { data ->
             if (data.isNotEmpty()) {
                 chartAdapter.updateData(data as ArrayList<ChartDTO?>?)
+                binding.chartysRecyclerView.visibility = View.VISIBLE
             }
         }
     }

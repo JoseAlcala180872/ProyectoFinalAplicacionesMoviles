@@ -25,8 +25,11 @@ class ChartsViewModel : ViewModel() {
     private val _categories = MutableLiveData<List<String>>()
     val categories: LiveData<List<String>> = _categories
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
+    private val _isLoadingWeek = MutableLiveData<Boolean>()
+    val isLoadingWeek: LiveData<Boolean> = _isLoadingWeek
+
+    private val _isLoadingMonth = MutableLiveData<Boolean>()
+    val isLoadingMonth: LiveData<Boolean> = _isLoadingMonth
 
     fun loadCategories() {
         // Directly retrieve categories without a callback
@@ -45,14 +48,14 @@ class ChartsViewModel : ViewModel() {
     }
 
     fun loadWeeklyStats(startDate: String, endDate: String, category: String, context: Context) {
-        _isLoading.postValue(true)
+        _isLoadingWeek.postValue(true)
         viewModelScope.launch {
             try {
                 val result = habitRepository.getCategoryStats(startDate, endDate, context)
                 _weeklyStats.postValue(result)
             } catch (e: Exception) {
             } finally {
-                _isLoading.postValue(false)
+                _isLoadingWeek.postValue(false)
             }
         }
     }
@@ -76,7 +79,7 @@ class ChartsViewModel : ViewModel() {
     }
 
     fun loadMonthlyStats(month: Int, year: Int, context: Context) {
-        _isLoading.postValue(true)
+        _isLoadingMonth.postValue(true)
         viewModelScope.launch {
             try {
                 val (startDate, endDate) = getMonthDateRange(month, year)
@@ -85,7 +88,7 @@ class ChartsViewModel : ViewModel() {
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {
-                _isLoading.postValue(false)
+                _isLoadingMonth.postValue(false)
             }
         }
     }

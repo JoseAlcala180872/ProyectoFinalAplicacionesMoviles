@@ -21,15 +21,20 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyViewHolder
     Context context;
     ArrayList<ChartDTO> fullChartList;  // full data
     ArrayList<ChartDTO> visibleChartList; // filtered data
+    String filter;
+
 
     public ChartAdapter(Context context, ArrayList<ChartDTO> chartList, String filter) {
         this.context = context;
         this.fullChartList = chartList;
-        applyFilter(filter);  // initialize filtered list
+        this.filter=filter;
+        applyFilter(filter);
+
     }
 
     public void applyFilter(String filter) {
-        if (filter == null || filter.trim().isEmpty()) {
+        this.filter = filter;
+        if ("Todas".equalsIgnoreCase(filter.trim()) || filter.trim().isEmpty()) {
             visibleChartList = new ArrayList<>(fullChartList);
         } else {
             visibleChartList = new ArrayList<>();
@@ -45,7 +50,7 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyViewHolder
     // Add updateData method in Java
     public void updateData(ArrayList<ChartDTO> newData) {
         this.fullChartList = new ArrayList<>(newData);
-        applyFilter("");  // Reapply filter if needed, or leave it empty to show all
+        applyFilter(filter);  // Reapply filter if needed, or leave it empty to show all
         notifyDataSetChanged(); // Notify the adapter that the data has changed
     }
 
