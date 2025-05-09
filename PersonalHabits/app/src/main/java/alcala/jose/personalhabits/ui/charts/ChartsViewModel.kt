@@ -5,6 +5,7 @@ import alcala.jose.personalhabits.Repositories.CategoryRepository
 import alcala.jose.personalhabits.Repositories.HabitRepository
 import alcala.jose.personalhabits.Repositories.UserRepository
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -53,6 +54,7 @@ class ChartsViewModel : ViewModel() {
             try {
                 val result = habitRepository.getCategoryStats(startDate, endDate, context)
                 _weeklyStats.postValue(result)
+                Log.e("HELP",(result.size<=0).toString())
             } catch (e: Exception) {
             } finally {
                 _isLoadingWeek.postValue(false)

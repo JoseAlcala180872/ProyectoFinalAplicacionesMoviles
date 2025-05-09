@@ -163,22 +163,39 @@ class ChartsFragment : Fragment() {
         viewModel.isLoadingWeek.observe(viewLifecycleOwner) { isLoading ->
             binding.weekProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
             binding.WeeklychartysRecyclerView.visibility = if (isLoading) View.GONE else View.VISIBLE
+            binding.amountStatusWeek.visibility = View.GONE
+
         }
         viewModel.isLoadingMonth.observe(viewLifecycleOwner) { isLoading ->
             binding.monthProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
             binding.chartysRecyclerView.visibility = if (isLoading) View.GONE else View.VISIBLE
+            binding.amountStatusMonth.visibility =  View.GONE
         }
+
+
+
+
 
         viewModel.weeklyStats.observe(viewLifecycleOwner) { data ->
             if (data.isNotEmpty()) {
                 weeklyChartAdapter.updateData(data as ArrayList<ChartDTO?>?)
                 binding.WeeklychartysRecyclerView.visibility = View.VISIBLE
+
             }
+            if (data.size<=0) {
+                binding.amountStatusMonth.visibility = View.VISIBLE
+            }
+
         }
+
         viewModel.monthlyStats.observe(viewLifecycleOwner) { data ->
             if (data.isNotEmpty()) {
                 chartAdapter.updateData(data as ArrayList<ChartDTO?>?)
                 binding.chartysRecyclerView.visibility = View.VISIBLE
+
+            }
+            if (data.size<=0) {
+                binding.amountStatusWeek.visibility = View.VISIBLE
             }
         }
     }

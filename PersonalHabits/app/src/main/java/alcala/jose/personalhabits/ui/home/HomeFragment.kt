@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import alcala.jose.personalhabits.databinding.FragmentHomeBinding
 import alcala.jose.personalhabits.ui.HabitAdapter
+import android.R.attr.visible
 import android.content.Intent
 import android.widget.Button
 import android.widget.ImageButton
@@ -51,11 +52,15 @@ class HomeFragment : Fragment() {
 
         homeViewModel.habitsLiveData.observe(viewLifecycleOwner, Observer { habits ->
             Log.d("HomeFragment", "Fetched ${habits.size} habits")
+            if (habits.size<=0){
+                binding.amountStatus.visibility= View.VISIBLE
+            }
             habitAdapter = HabitAdapter(requireContext(), habits as ArrayList<Habito?>?, true)
             recyclerView.adapter = habitAdapter
         })
 
         homeViewModel.fetchHabits()
+
 
         val addHabitButton: ImageButton = binding.addHabitButton
         addHabitButton.setOnClickListener {
@@ -63,7 +68,7 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
-        val progressBar = binding.progressBar // Direct reference from binding
+        val progressBar = binding.progressBar
 
         var total = 0
         var completed = 0
@@ -71,28 +76,26 @@ class HomeFragment : Fragment() {
         fun updateProgress(completed: Int, total: Int) {
             val percentage = if (total == 0) 0 else (completed.toFloat() / total * 100).toInt()
             Log.d("HomeFragment", "Updating progress bar: completed=$completed, total=$total, percentage=$percentage")
-            progressBar?.progress = percentage // Null-safe check
+            progressBar?.progress = percentage
         }
 
         homeViewModel.totalHabitsOfTheDayLiveData.observe(viewLifecycleOwner) { totalCount ->
             Log.d("HomeFragment", "Observed total habits: $totalCount")
             total = totalCount
-            // Ensure the progress bar updates when total changes
             updateProgress(completed, total)
         }
 
         homeViewModel.totalDoneHabitsOfTheDayLiveData.observe(viewLifecycleOwner) { doneCount ->
             Log.d("HomeFragment", "Observed completed habits: $doneCount")
-            completed = doneCount // The number of completed habits
-            // Update progress after observing completed habits
+            completed = doneCount
             updateProgress(completed, total)
         }
 
 
         // Trigger the counts
         Log.d("HomeFragment", "Requesting habit counts...")
-        homeViewModel.getAmountHabitsOfTheDay() // Fetch the total number of habits
-        homeViewModel.getDoneAmountHabitsOfTheDay() // Fetch the completed habits count
+        homeViewModel.getAmountHabitsOfTheDay()
+        homeViewModel.getDoneAmountHabitsOfTheDay()
     }
 
     override fun onDestroyView() {

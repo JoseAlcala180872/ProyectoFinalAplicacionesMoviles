@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import alcala.jose.personalhabits.databinding.FragmentNotificationsBinding
 import alcala.jose.personalhabits.ui.HabitAdapter
+import android.util.Log
 import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -43,6 +44,9 @@ class HabitsFragment : Fragment() {
 
 
         notificationsViewModel.habitsLiveData.observe(viewLifecycleOwner) { habits ->
+            if (habits.size<=0){
+                binding.amountStatus.visibility= View.VISIBLE
+            }
             habitAdapter = HabitAdapter(requireContext(), habits as ArrayList<Habito?>?, false)
             recyclerView.adapter = habitAdapter
         }
