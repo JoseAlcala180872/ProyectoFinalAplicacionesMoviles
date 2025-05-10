@@ -23,6 +23,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -137,10 +138,37 @@ class AddHabito : AppCompatActivity() {
         val diasSeleccionados = obtenerDiasSeleccionados()
         val categoria = spCategoria.selectedItem.toString()
 
-        if (nombre.isEmpty() || descripcion.isEmpty() || hora.isEmpty() || diasSeleccionados.isEmpty() || categoria.isEmpty()) {
+        if (nombre.isEmpty()) {
             etNombre.error = "Los campos no pueden estar vacíos"
+            Toast.makeText(this, "El nombre no puede estar vacío", Toast.LENGTH_SHORT).show()
             return
         }
+        if(descripcion.isEmpty()){
+            etDescripcion.error = "La descripción no puede estar vacía"
+            Toast.makeText(this, "La descripción no puede estar vacía", Toast.LENGTH_SHORT).show()
+            return
+
+        }
+        if(hora.isEmpty()){
+            tvHoraSeleccionada.error = "La hora no puede estar vacía"
+            Toast.makeText(this, "La descripción no puede estar vacía", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if(diasSeleccionados.isEmpty()){
+            Toast.makeText(this, "Debe seleccionar al menos un día de la semana", Toast.LENGTH_SHORT).show()
+            return
+
+        }
+        if(categoria.isEmpty()){
+            Toast.makeText(this, "Debe seleccionar una categoría", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if(selectedColor == Color.GRAY){
+            Toast.makeText(this, "Debe seleccionar un color", Toast.LENGTH_SHORT).show()
+            return
+
+        }
+
 
         val nuevoHabito = Habito(
             nombre = nombre,
@@ -158,9 +186,11 @@ class AddHabito : AppCompatActivity() {
                 Log.d("AddHabito", "Hábito guardado exitosamente")
                 val intent = Intent(this@AddHabito, MenuFragment::class.java)
                 startActivity(intent)
+                Toast.makeText(this@AddHabito, "Hábito guardado exitosamente", Toast.LENGTH_SHORT).show()
                 finish()
             } else {
                 Log.e("AddHabito", "Error al guardar el hábito")
+                Toast.makeText(this@AddHabito, "Error al guardar el hábito", Toast.LENGTH_SHORT).show()
             }
 
         }

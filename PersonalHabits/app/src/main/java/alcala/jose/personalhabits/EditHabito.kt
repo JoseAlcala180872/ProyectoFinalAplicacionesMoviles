@@ -18,6 +18,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -169,14 +170,18 @@ class EditHabito : AppCompatActivity() {
                 habitRepository.updateHabit(updatedHabit)
             } catch (e: Exception) {
                 Log.e("EditHabito", "Failed to update habit", e)
+                Toast.makeText(this@EditHabito, "Failed to update habit", Toast.LENGTH_SHORT).show()
                 false
             }
 
             if (success) {
                 Log.d("EditHabito", "Habit updated successfully")
+                Toast.makeText(this@EditHabito, "Habit updated successfully", Toast.LENGTH_SHORT).show()
                 finish()
             } else {
                 Log.e("EditHabito", "Failed to update habit")
+                Toast.makeText(this@EditHabito, "Failed to update habit", Toast.LENGTH_SHORT).show()
+
             }
         }
     }

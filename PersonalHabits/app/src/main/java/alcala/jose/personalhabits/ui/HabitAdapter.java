@@ -12,6 +12,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,9 +71,9 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
             holder.completeButton.setOnClickListener(v -> {
                 habitRepository.updateCompletionStatus(habit.getId(), true, success -> {
                     if (success) {
-                        // Do something on success (e.g., update UI or notify user)
+                        Toast.makeText(context, "Hábito completado", Toast.LENGTH_SHORT).show();
                     } else {
-                        // Handle failure (e.g., show error message)
+                        Toast.makeText(context, "Error al completar el hábito", Toast.LENGTH_SHORT).show();
                     }
                     return null;
                 });
@@ -103,9 +105,9 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
                     Log.d("HabitAdapter", "Delete selected for habit: " + (ArrayList<String>) habit.getFrecuencia());
                     habitRepository.deleteHabit(habit.getId(), success -> {
                         if (success) {
-                            // Handle success
+                            Toast.makeText(context, "Hábito eliminado", Toast.LENGTH_SHORT).show();
                         } else {
-                            // Handle failure
+                            Toast.makeText(context, "Error al eliminar el hábito", Toast.LENGTH_SHORT).show();
                         }
                         return null;
                     });
