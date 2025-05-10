@@ -8,7 +8,6 @@
     android:fitsSystemWindows="true"
     tools:context=".MenuFragment">
 
-    <!-- Title -->
     <TextView
         android:id="@+id/misHabitosTitle"
         android:layout_width="wrap_content"
@@ -35,7 +34,6 @@
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/recyclerView" />
 
-    <!-- RecyclerView (Set to take half the screen height) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
@@ -50,7 +48,6 @@
         app:layout_constraintHeight_default="percent"
         app:layout_constraintHeight_percent="0.65" />
 
-    <!-- Streak ImageView -->
     <ImageView
         android:id="@+id/streakStatusImage"
         android:layout_width="100dp"
@@ -62,7 +59,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Streak TextView -->
     <TextView
         android:id="@+id/streakText"
         android:layout_width="wrap_content"

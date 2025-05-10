@@ -31,7 +31,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
 
     Context context;
     ArrayList<Habito> habitList;
-    boolean showCompleteButton;  // New flag
+    boolean showCompleteButton;
 
     UserRepository userRepository = new UserRepository();
     HabitRepository habitRepository = new HabitRepository();
@@ -65,11 +65,10 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
         holder.habitDescription.setText(habit.getDescripcion());
         holder.habitCategory.setText(habit.getCategoria());
 
-        // Hide the complete button if the flag is false
         if (!showCompleteButton) {
-            holder.completeButton.setVisibility(View.GONE);  // Hide the button
+            holder.completeButton.setVisibility(View.GONE);
         } else {
-            holder.completeButton.setVisibility(View.VISIBLE);  // Show the button
+            holder.completeButton.setVisibility(View.VISIBLE);
 
             holder.completeButton.setOnClickListener(v -> {
                 habitRepository.updateCompletionStatus(habit.getId(), true, success -> {

@@ -110,8 +110,9 @@
 
     <Button
         android:id="@+id/btnRegistrarse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
         android:background="@color/veryPurple"
         android:text="Registrarse"
         android:layout_gravity="center"

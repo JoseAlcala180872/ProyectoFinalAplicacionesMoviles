@@ -1,10 +1,12 @@
 package alcala.jose.personalhabits
 
+import alcala.jose.personalhabits.AddHabito
 import alcala.jose.personalhabits.Dominio.Habito
 import alcala.jose.personalhabits.Repositories.CategoryRepository
 import alcala.jose.personalhabits.Repositories.HabitRepository
 import alcala.jose.personalhabits.Repositories.UserRepository
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Bundle
@@ -25,7 +27,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class EditHabito : AppCompatActivity() {
 
@@ -164,26 +169,24 @@ class EditHabito : AppCompatActivity() {
             userId = userId
         )
 
-        // Inside your Activity or Fragment
         lifecycleScope.launch {
-            val success = try {
+            val success = withContext(Dispatchers.IO) {
                 habitRepository.updateHabit(updatedHabit)
-            } catch (e: Exception) {
-                Log.e("EditHabito", "Failed to update habit", e)
-                Toast.makeText(this@EditHabito, "Failed to update habit", Toast.LENGTH_SHORT).show()
-                false
             }
-
             if (success) {
                 Log.d("EditHabito", "Habit updated successfully")
+                val intent = Intent(this@EditHabito, MenuFragment::class.java)
+                startActivity(intent)
                 Toast.makeText(this@EditHabito, "Habit updated successfully", Toast.LENGTH_SHORT).show()
                 finish()
             } else {
                 Log.e("EditHabito", "Failed to update habit")
+                val intent = Intent(this@EditHabito, MenuFragment::class.java)
+                startActivity(intent)
                 Toast.makeText(this@EditHabito, "Failed to update habit", Toast.LENGTH_SHORT).show()
-
             }
         }
+
     }
 
     private fun showTimePickerDialog() {

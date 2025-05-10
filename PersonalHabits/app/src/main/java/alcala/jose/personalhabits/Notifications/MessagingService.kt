@@ -16,7 +16,6 @@ class MessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         Log.d("FCM", "Refreshed token: $token")
-        // TODO: Send token to your server if needed
     }
 
     @SuppressLint("ServiceCast")

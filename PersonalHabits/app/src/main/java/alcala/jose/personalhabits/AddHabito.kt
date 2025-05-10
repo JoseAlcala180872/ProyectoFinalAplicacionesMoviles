@@ -27,6 +27,8 @@ import android.widget.Toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class AddHabito : AppCompatActivity() {
 
@@ -149,10 +151,12 @@ class AddHabito : AppCompatActivity() {
             return
 
         }
-        if (hora == "Hora no seleccionada") {
-            tvHoraSeleccionada.error = "La hora no puede estar vacía"
-            Toast.makeText(this, "La hora no puede estar vacía", Toast.LENGTH_SHORT).show()
-            return
+        if (hora == "Hora no seleccionada"||tvHoraSeleccionada.text.isEmpty()) {
+            val calendar = Calendar.getInstance()
+            val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+            val currentTime = formatter.format(calendar.time)
+            tvHoraSeleccionada.text = currentTime
+            Toast.makeText(this, "Se asignó la hora actual: $currentTime", Toast.LENGTH_SHORT).show()
         }
 
         if(diasSeleccionados.isEmpty()){

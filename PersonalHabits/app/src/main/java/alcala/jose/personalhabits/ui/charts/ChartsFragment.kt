@@ -56,17 +56,14 @@ class ChartsFragment : Fragment() {
         setupChartObservers()
         setupFilterButton()
 
-        // Monthly recyclerView
         binding.chartysRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         chartAdapter = ChartAdapter(requireContext(), ArrayList(), "Todas")
         binding.chartysRecyclerView.adapter = chartAdapter
 
-        // Weekly recyclerView
         binding.WeeklychartysRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         weeklyChartAdapter = ChartAdapter(requireContext(), ArrayList(), "Todas")
         binding.WeeklychartysRecyclerView.adapter = weeklyChartAdapter
 
-        // Set default dates and show them
         val defaultDates = viewModel.getDefaultDates()
         startDate = defaultDates.first
         endDate = defaultDates.second
@@ -75,7 +72,6 @@ class ChartsFragment : Fragment() {
 
 
 
-        // Month spinner
         val monthSpinner: Spinner = root.findViewById(R.id.monthSpinner)
         val months = DateFormatSymbols().months.take(12)
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, months)

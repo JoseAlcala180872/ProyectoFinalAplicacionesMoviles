@@ -33,7 +33,6 @@ class ChartsViewModel : ViewModel() {
     val isLoadingMonth: LiveData<Boolean> = _isLoadingMonth
 
     fun loadCategories() {
-        // Directly retrieve categories without a callback
         _categories.postValue(userRepository.getCategories())
     }
 

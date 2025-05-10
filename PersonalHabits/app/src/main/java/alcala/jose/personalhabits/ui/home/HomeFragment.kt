@@ -3,7 +3,9 @@ package alcala.jose.personalhabits.ui.home
 import HomeViewModel
 import alcala.jose.personalhabits.AddHabito
 import alcala.jose.personalhabits.Dominio.Habito
+import alcala.jose.personalhabits.MainActivity
 import alcala.jose.personalhabits.R
+import alcala.jose.personalhabits.Repositories.AuthRepository
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -43,12 +45,13 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val authRepository = AuthRepository()
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         Log.d("HomeFragment", "ViewModel initialized")
 
         recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
+
 
 
 
@@ -72,6 +75,13 @@ class HomeFragment : Fragment() {
 
         homeViewModel.fetchHabits()
 
+
+        binding.logoutButton.setOnClickListener {
+            authRepository.logout()
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
+        }
 
         val addHabitButton: ImageButton = binding.addHabitButton
         addHabitButton.setOnClickListener {
@@ -103,7 +113,6 @@ class HomeFragment : Fragment() {
         }
 
 
-        // Trigger the counts
         Log.d("HomeFragment", "Requesting habit counts...")
         homeViewModel.getAmountHabitsOfTheDay()
         homeViewModel.getDoneAmountHabitsOfTheDay()

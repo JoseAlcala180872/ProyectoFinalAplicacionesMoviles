@@ -82,14 +82,11 @@ class MainActivity : AppCompatActivity() {
             manager.createNotificationChannel(channel)
         }
 
-        // Subscribe to the "daily" topic for push notifications
         FirebaseMessaging.getInstance().subscribeToTopic("daily")
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // Log success message or do something when subscription is successful
                     Log.d("PushNotification", "Subscribed to 'daily' topic successfully!")
                 } else {
-                    // Log failure message or handle failure case
                     Log.d("PushNotification", "Failed to subscribe to 'daily' topic.")
                 }
             }

@@ -24,8 +24,8 @@ public class ColorPickerDialogFragment extends DialogFragment {
 
     private RecyclerView colorRecyclerView;
     private ColorAdapter colorAdapter;
-    private String selectedColor = "#FFFFFF";  // Default white
-    private View dialogView;  // Store inflated view
+    private String selectedColor = "#FFFFFF";
+    private View dialogView;
     private View colorPreviewDialog;
 
     @NonNull
@@ -36,7 +36,6 @@ public class ColorPickerDialogFragment extends DialogFragment {
         colorRecyclerView = dialogView.findViewById(R.id.colorRecyclerView);
         Button confirmButton = dialogView.findViewById(R.id.confirmButton);
 
-        // Set up RecyclerView
         colorRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 5));
         colorAdapter = new ColorAdapter(new ColorRepository().getColors(), color -> {
             selectedColor = color;
@@ -44,7 +43,6 @@ public class ColorPickerDialogFragment extends DialogFragment {
         });
         colorRecyclerView.setAdapter(colorAdapter);
 
-        // Confirm color selection
         confirmButton.setOnClickListener(v -> {
             Bundle result = new Bundle();
             result.putString("color", selectedColor);
@@ -66,7 +64,6 @@ public class ColorPickerDialogFragment extends DialogFragment {
         }
     }
 
-    // Adapter for RecyclerView
     private static class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHolder> {
 
         private final List<kotlin.Pair<String, String>> colors;

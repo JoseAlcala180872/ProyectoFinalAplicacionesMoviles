@@ -19,8 +19,8 @@ import alcala.jose.personalhabits.R;
 public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyViewHolder> {
 
     Context context;
-    ArrayList<ChartDTO> fullChartList;  // full data
-    ArrayList<ChartDTO> visibleChartList; // filtered data
+    ArrayList<ChartDTO> fullChartList;
+    ArrayList<ChartDTO> visibleChartList;
     String filter;
 
 

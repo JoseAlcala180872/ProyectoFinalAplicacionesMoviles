@@ -23,7 +23,6 @@ class HabitsViewModel : ViewModel() {
     fun loadStreak() {
         habitRepository.getStreakAndLastCompletionDate { streak, lastCompletionDate ->
             _streak.postValue(streak)
-            // Optionally, you can also store the lastCompletionDate for other use cases.
         }
     }
 

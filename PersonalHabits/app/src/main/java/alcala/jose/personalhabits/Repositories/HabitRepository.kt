@@ -192,9 +192,6 @@ class HabitRepository {
     }
 
 
-    /**
-     * Converts a date string (format: dd-MM-yyyy) into a weekday code (e.g., "L", "M", "MX")
-     */
     fun getDayCodeFromDate(dateString: String): String {
         return try {
             val format = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())

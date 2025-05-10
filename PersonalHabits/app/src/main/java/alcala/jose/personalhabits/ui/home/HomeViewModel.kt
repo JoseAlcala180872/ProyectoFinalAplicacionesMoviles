@@ -16,16 +16,15 @@ class HomeViewModel : ViewModel() {
     val totalHabitsOfTheDayLiveData = MutableLiveData<Int>()
     val totalDoneHabitsOfTheDayLiveData = MutableLiveData<Int>()
 
-    // Fetch pending habits for the day
     fun fetchHabits() {
         viewModelScope.launch {
             val habits = habitRepository.getPendingHabitsForToday()
             Log.d("HabitsViewModel", "Fetched ${habits.size} habits")
             habitsLiveData.value = habits
+            getAmountHabitsOfTheDay()
+            getDoneAmountHabitsOfTheDay()
         }
     }
-
-
 
     fun getAmountHabitsOfTheDay() {
         viewModelScope.launch {
@@ -35,7 +34,6 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    // Get the total number of done habits for today
     fun getDoneAmountHabitsOfTheDay() {
         viewModelScope.launch {
             val count = habitRepository.getAmountDoneHabitsForToday()
