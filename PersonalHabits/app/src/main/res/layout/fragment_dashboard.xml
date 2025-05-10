@@ -110,6 +110,8 @@
                 android:gravity="center"/>
 
             <Spinner
+                android:background="@color/lessPurple"
+                android:textColor="@color/white"
                 android:alpha="0.40"
                 android:id="@+id/spCategoria"
                 android:layout_width="100dp"

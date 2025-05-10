@@ -46,8 +46,19 @@ class HabitsFragment : Fragment() {
         notificationsViewModel.habitsLiveData.observe(viewLifecycleOwner) { habits ->
             if (habits.size<=0){
                 binding.amountStatus.visibility= View.VISIBLE
+            } else{
+                binding.amountStatus.visibility= View.GONE
             }
-            habitAdapter = HabitAdapter(requireContext(), habits as ArrayList<Habito?>?, false)
+
+            habitAdapter = HabitAdapter(
+                requireContext(),
+                habits as ArrayList<Habito>,
+                false
+            ) {
+                notificationsViewModel.fetchHabits()
+            }
+
+
             recyclerView.adapter = habitAdapter
         }
 

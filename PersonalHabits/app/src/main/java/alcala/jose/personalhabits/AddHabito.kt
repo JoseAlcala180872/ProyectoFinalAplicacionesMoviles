@@ -149,11 +149,12 @@ class AddHabito : AppCompatActivity() {
             return
 
         }
-        if(hora.isEmpty()){
+        if (hora == "Hora no seleccionada") {
             tvHoraSeleccionada.error = "La hora no puede estar vacía"
-            Toast.makeText(this, "La descripción no puede estar vacía", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "La hora no puede estar vacía", Toast.LENGTH_SHORT).show()
             return
         }
+
         if(diasSeleccionados.isEmpty()){
             Toast.makeText(this, "Debe seleccionar al menos un día de la semana", Toast.LENGTH_SHORT).show()
             return

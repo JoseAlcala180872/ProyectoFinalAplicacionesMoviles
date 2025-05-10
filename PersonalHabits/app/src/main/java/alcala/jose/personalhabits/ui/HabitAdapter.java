@@ -19,6 +19,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+
+import alcala.jose.personalhabits.Charts.ChartDTO;
 import alcala.jose.personalhabits.Dominio.Habito;
 import alcala.jose.personalhabits.EditHabito;
 import alcala.jose.personalhabits.R;
@@ -33,11 +35,12 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
 
     UserRepository userRepository = new UserRepository();
     HabitRepository habitRepository = new HabitRepository();
-
-    public HabitAdapter(Context context, ArrayList<Habito> habitList, boolean showCompleteButton) {
+    Runnable refetchCallback;
+    public HabitAdapter(Context context, ArrayList<Habito> habitList, boolean showCompleteButton,Runnable refetchCallback) {
         this.context = context;
         this.habitList = habitList;
         this.showCompleteButton = showCompleteButton;
+        this.refetchCallback = refetchCallback;
     }
 
     @NonNull
@@ -75,6 +78,9 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
                     } else {
                         Toast.makeText(context, "Error al completar el hábito", Toast.LENGTH_SHORT).show();
                     }
+                    if (refetchCallback != null) {
+                        refetchCallback.run();
+                    }
                     return null;
                 });
             });
@@ -101,13 +107,18 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
                     intent.putExtra("habitTime", habit.getHora());
 
                     context.startActivity(intent);
-                } else if (itemId == R.id.menu_delete) {
+                    if (refetchCallback != null) {
+                        refetchCallback.run();
+                    }                } else if (itemId == R.id.menu_delete) {
                     Log.d("HabitAdapter", "Delete selected for habit: " + (ArrayList<String>) habit.getFrecuencia());
                     habitRepository.deleteHabit(habit.getId(), success -> {
                         if (success) {
                             Toast.makeText(context, "Hábito eliminado", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(context, "Error al eliminar el hábito", Toast.LENGTH_SHORT).show();
+                        }
+                        if (refetchCallback != null) {
+                            refetchCallback.run();
                         }
                         return null;
                     });
@@ -117,6 +128,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
             popupMenu.show();
         });
     }
+
 
     @Override
     public int getItemCount() {

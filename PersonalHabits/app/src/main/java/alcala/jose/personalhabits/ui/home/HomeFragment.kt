@@ -50,12 +50,23 @@ class HomeFragment : Fragment() {
         recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
 
+
+
         homeViewModel.habitsLiveData.observe(viewLifecycleOwner, Observer { habits ->
             Log.d("HomeFragment", "Fetched ${habits.size} habits")
             if (habits.size<=0){
                 binding.amountStatus.visibility= View.VISIBLE
+            } else{
+                binding.amountStatus.visibility= View.GONE
             }
-            habitAdapter = HabitAdapter(requireContext(), habits as ArrayList<Habito?>?, true)
+
+            habitAdapter = HabitAdapter(
+                requireContext(),
+                habits as ArrayList<Habito>,
+                true
+            ) {
+                homeViewModel.fetchHabits()
+            }
             recyclerView.adapter = habitAdapter
         })
 

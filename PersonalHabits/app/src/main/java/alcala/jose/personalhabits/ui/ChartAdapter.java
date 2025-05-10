@@ -47,11 +47,10 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyViewHolder
         notifyDataSetChanged();
     }
 
-    // Add updateData method in Java
     public void updateData(ArrayList<ChartDTO> newData) {
         this.fullChartList = new ArrayList<>(newData);
-        applyFilter(filter);  // Reapply filter if needed, or leave it empty to show all
-        notifyDataSetChanged(); // Notify the adapter that the data has changed
+        applyFilter(filter);
+        notifyDataSetChanged();
     }
 
     @NonNull

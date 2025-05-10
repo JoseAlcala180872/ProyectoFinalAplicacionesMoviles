@@ -20,13 +20,13 @@ class HomeViewModel : ViewModel() {
     fun fetchHabits() {
         viewModelScope.launch {
             val habits = habitRepository.getPendingHabitsForToday()
+            Log.d("HabitsViewModel", "Fetched ${habits.size} habits")
             habitsLiveData.value = habits
         }
     }
 
 
 
-    // Get the total number of habits scheduled for today
     fun getAmountHabitsOfTheDay() {
         viewModelScope.launch {
             val count = habitRepository.getTotalHabitsScheduledForToday()
