@@ -19,4 +19,9 @@
         <item name="android:headerBackground">@color/lessPurple</item>
         <item name="android:textColorPrimary">@color/mediumPurple</item>
     </style>
+
+    <style name="DayCheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:buttonTint">@color/veryPurple</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

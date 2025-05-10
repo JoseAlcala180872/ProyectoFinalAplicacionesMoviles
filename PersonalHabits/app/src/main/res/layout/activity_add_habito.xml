@@ -171,7 +171,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="L"
-            android:textColor="@color/veryPurple" />
+            android:textColor="@color/veryPurple"
+            style="@style/DayCheckBox"/>
 
         <CheckBox
             android:id="@+id/cbMartes"
@@ -179,7 +180,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="M"
-            android:textColor="@color/veryPurple" />
+            android:textColor="@color/veryPurple"
+            style="@style/DayCheckBox"/>
 
         <CheckBox
             android:id="@+id/cbMiercoles"
@@ -187,7 +189,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="X"
-            android:textColor="@color/veryPurple" />
+            android:textColor="@color/veryPurple"
+            style="@style/DayCheckBox"/>
 
         <CheckBox
             android:id="@+id/cbJueves"
@@ -195,7 +198,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="J"
-            android:textColor="@color/veryPurple" />
+            android:textColor="@color/veryPurple"
+            style="@style/DayCheckBox"/>
 
         <CheckBox
             android:id="@+id/cbViernes"
@@ -203,7 +207,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="V"
-            android:textColor="@color/veryPurple" />
+            android:textColor="@color/veryPurple"
+            style="@style/DayCheckBox"/>
 
         <CheckBox
             android:id="@+id/cbSabado"
@@ -211,14 +216,16 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="S"
-            android:textColor="@color/veryPurple" />
+            android:textColor="@color/veryPurple"
+            style="@style/DayCheckBox"/>
 
         <CheckBox
             android:id="@+id/cbDomingo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="D"
-            android:textColor="@color/veryPurple" />
+            android:textColor="@color/veryPurple"
+            style="@style/DayCheckBox"/>
     </LinearLayout>
 
 
